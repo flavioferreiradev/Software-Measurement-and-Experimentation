@@ -165,9 +165,10 @@ nos Labs 01–03, no dashboard ou em arquivos rastreados da S01 além do README.
 
 ## Problemas e limites
 
-O único problema de execução observado foi a permissão de limpeza do Temp
-virtualizado pelo sandbox. A execução nativa com temporário local passou sem
-esse aviso. Não há falha estatística ou de integração pendente identificada.
+Na validação local, o problema de execução observado foi a permissão de limpeza
+do Temp virtualizado pelo sandbox. A execução nativa com temporário local passou
+sem esse aviso. Não foi identificada falha estatística local. O bloqueio externo
+da CI de publicação está registrado na seção de rastreabilidade abaixo.
 Na validação inicial não foi executada CI remota, conforme a restrição daquela
 etapa. A publicação autorizada utiliza o GitHub Actions do PR antes do merge.
 
@@ -220,3 +221,26 @@ Na revalidação de publicação, `python -m src.run_experiments` reproduziu os
 três hashes registrados acima. Os sete arquivos aprovados de código, testes
 e resultados S02 permaneceram idênticos à auditoria, assim como os 30 arquivos
 preservados da S01. As mudanças posteriores à aprovação são documentais.
+
+### Situação de integração: bloqueada pela infraestrutura do GitHub Actions
+
+O PR #36 está aberto. A CI foi disparada em push e pull_request, mas nenhum
+passo dos jobs chegou a executar. O GitHub registrou:
+
+> The job was not started because your account is locked due to a billing issue.
+
+Evidências: [execução do PR](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/actions/runs/42925785669)
+e [execução do push](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/actions/runs/42925775278).
+O job Windows falhou antes da inicialização; no PR, Ubuntu foi cancelado pelo
+fail-fast da matriz. A execução do push registrou o mesmo bloqueio nos dois
+sistemas. Isso não é uma aprovação remota dos 129 testes que passaram localmente.
+
+O merge não foi realizado. A #34 permanece aberta e o cartão permanece em
+Review; a #35 não é alterada nem encerrada. Não foram modificados workflow,
+regras, faturamento ou testes para contornar a verificação.
+
+Para concluir a integração, o responsável pela conta deve resolver a pendência
+de cobrança indicada pelo GitHub. Depois, reexecutar os checks do PR #36 e
+somente fazer o merge quando Windows e Ubuntu estiverem aprovados. O próprio
+PR mantém o estado atual e o futuro SHA de merge; os arquivos já publicados
+podem ser consultados na branch `codex/lab04s02-luidi-34` enquanto isso.

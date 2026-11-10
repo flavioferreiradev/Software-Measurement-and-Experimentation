@@ -10,6 +10,13 @@ Flávio deve começar a integração visual na main que contém
 essa entrega e seguir a sua própria
 [Issue #35](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/issues/35).
 
+**Status de integração:** o PR #36 está aberto, com a CI impedida de iniciar
+por bloqueio de cobrança da conta no GitHub Actions. O merge ainda não ocorreu,
+portanto a main ainda não contém esta contribuição. Os artefatos estão publicados
+na branch `codex/lab04s02-luidi-34`; a pendência externa e as execuções estão em
+`validacao_s02.md`. Não iniciar a integração a partir da main antiga supondo
+que ela já contém o JSON S02.
+
 ## Entrega estatística pronta
 
 - Q1: erro tipo I, 10.000 amostras por situação sob p=0,05.
@@ -21,6 +28,19 @@ essa entrega e seguir a sua própria
 - Contrato separado da S01; G1/G2 e seus dados permanecem intactos.
 
 ## Como reproduzir e ler
+
+Enquanto o merge estiver bloqueado, é possível validar os arquivos publicados
+em uma branch local de revisão, sem alterar a #35:
+
+```bash
+git fetch origin
+git switch -c revisao-lab04s02-34 origin/codex/lab04s02-luidi-34
+cd Laboratorio4
+python -m venv .venv
+```
+
+Ativar o ambiente e usar os comandos de instalação/reprodução abaixo. Essa
+revisão não substitui a aprovação da CI nem a integração do PR #36.
 
 Após confirmar o merge da #34, atualizar a main e criar a branch da #35:
 

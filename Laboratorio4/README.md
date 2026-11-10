@@ -163,6 +163,12 @@ O PR registra a CI e a integração na main; o
 [handoff da Issue #35](docs/handoff_flavio_s02.md) orienta o início do trabalho
 visual do Flávio a partir dessa main.
 
+Status de integração: PR aberto; os jobs do GitHub Actions estão impedidos de
+iniciar por bloqueio de cobrança da conta. A main ainda não recebeu esta entrega.
+Os resultados estão disponíveis na branch `codex/lab04s02-luidi-34`; detalhes e
+evidências em [docs/validacao_s02.md](docs/validacao_s02.md). O merge depende da
+regularização externa e da aprovação dos checks em Windows e Ubuntu.
+
 Após a instalação, dentro de `Laboratorio4/`, um comando executa todo o protocolo:
 
 ```bash
