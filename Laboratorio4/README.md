@@ -157,6 +157,12 @@ Laboratorio4/
 
 ## S02 — Q1, Q2 e Q3 (Issue #34)
 
+Entrega estatística publicada pelo
+[PR #36](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/pull/36).
+O PR registra a CI e a integração na main; o
+[handoff da Issue #35](docs/handoff_flavio_s02.md) orienta o início do trabalho
+visual do Flávio a partir dessa main.
+
 Após a instalação, dentro de `Laboratorio4/`, um comando executa todo o protocolo:
 
 ```bash

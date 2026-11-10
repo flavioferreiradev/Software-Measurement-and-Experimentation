@@ -5,7 +5,8 @@ A entrega estatística de Luidi foi desenvolvida na branch
 e auditoria externa aprovada. Sua publicação foi autorizada por Luidi.
 O resultado da integração é acompanhado na
 [Issue #34](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/issues/34)
-e no PR associado. Flávio deve começar a integração visual na main que contém
+e no [PR #36](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/pull/36).
+Flávio deve começar a integração visual na main que contém
 essa entrega e seguir a sua própria
 [Issue #35](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/issues/35).
 

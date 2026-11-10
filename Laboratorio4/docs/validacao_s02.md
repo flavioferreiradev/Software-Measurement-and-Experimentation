@@ -192,17 +192,22 @@ G3/G4, as seções finais e a conclusão geral permanecem com Flávio.
 - [x] Taxas comparadas à teoria binomial, com erro Monte Carlo considerado.
 - [x] Suíte completa local aprovada; comando, artefatos e limites registrados.
 - [x] Handoff preparado, sem implementar atividades do Flávio.
-- [ ] Commits e PR vinculados à #34: acompanhar em "Publicação e rastreabilidade".
-- [ ] Publicar o contrato e o handoff pelo PR, para consumo na #35.
+- [x] Commits e [PR #36](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/pull/36) vinculados à #34.
+- [x] Contrato e handoff publicados no PR, para consumo na #35.
 
-Os dois últimos itens foram adiados na etapa inicial e agora fazem parte do
-fluxo de publicação autorizado. Não alteram a implementação estatística auditada.
+Os dois últimos itens foram adiados na etapa inicial e concluídos na publicação
+autorizada. Não alteram a implementação estatística auditada.
 
 ## Publicação e rastreabilidade
 
 A auditoria externa foi aprovada e a publicação da #34 autorizada por Luidi.
-A entrega utiliza a branch `codex/lab04s02-luidi-34`, com commits vinculados à
-Issue. O PR registra os resultados da CI e o commit de integração; a
+A entrega foi publicada na branch `codex/lab04s02-luidi-34` pelo commit
+`946277e325f8e1663dd18dacb536aafc5379ca7f`, preservando os resultados aprovados.
+O [PR #36](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/pull/36)
+registra o estado de integração, os checks do GitHub Actions e o SHA do merge.
+Esses dados consultáveis permanecem a referência definitiva de publicação;
+o merge somente é realizado após aprovação das verificações, sem forçar regras.
+A
 [Issue #34](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/issues/34)
 e o [Kanban #3](https://github.com/users/flavioferreiradev/projects/3) registram
 o status efetivo. A Issue #35 do Flávio permanece independente e não é alterada.
