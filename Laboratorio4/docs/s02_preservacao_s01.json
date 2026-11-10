@@ -1,0 +1,39 @@
+{
+  "baseline_commit": "19308d8f905c50a05b962f0fdb56b842001bbd8a",
+  "issue": 34,
+  "excluded_editable": [
+    "Laboratorio4/README.md"
+  ],
+  "sha256": {
+    "Laboratorio4/.gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+    "Laboratorio4/.streamlit/config.toml": "9b574e4c40b82424eca21a66e30c0c35e92db52146087de5c0bec1ea045bf32d",
+    "Laboratorio4/dashboard/README.md": "134d4926fbbdaa1b56baf703398570bc0ea1fd8ba5bc32dfe3eaf557efd7d699",
+    "Laboratorio4/dashboard/__init__.py": "3ef2d7c96edc7473fe22bfa3a8b4e7990c19ed207e1558ae77862fd9027856ba",
+    "Laboratorio4/dashboard/app.py": "f4a3611893de2316ae0643688552d85d51ca823a6f61b0d2aeccc56eea1b3f83",
+    "Laboratorio4/dashboard/charts.py": "611925c7321fa1ad5c178319c78df34c513b5f6dfd7669c8c7875f25a60a6c51",
+    "Laboratorio4/dashboard/styles.css": "fead580fa4ea43b3b17d3c16e72c5c14dc69bb591ce5581136765b012e560d75",
+    "Laboratorio4/data/real_ci.csv": "bf995fdbc63ae37bdc44c747aac1277fd37e8f2796fca2ea91b15872c1d8e2e5",
+    "Laboratorio4/data/source_metadata.json": "dbd932e62adaf94cf7b0178bda2e481f33c630b86f7a23bc4284b13cf68dc9e3",
+    "Laboratorio4/docs/auditoria_inicial.md": "ba383b7c867f443ee469000cb2804a0903816f14bc884d3a665b1eca53eea6d5",
+    "Laboratorio4/docs/cenario_metodologia.md": "1c2a1f2ee038c29f52cf6350274dc5bf6aeaa620c896dfab2bb9be3a438e5bb7",
+    "Laboratorio4/docs/contrato_integracao.md": "cc8bf6453ff212e7b39345339b03e70c84b9af70f28d739fa37f31a450dd6ad1",
+    "Laboratorio4/docs/handoff_flavio.md": "551e9ffdd517d5f5acb645bcaea798d03295dbf2c032116b040dc7dda987a62c",
+    "Laboratorio4/docs/previsao_inicial.md": "a3d1b84dad8959c6116ab2e6b9b8b5f1bacb7450765fdcd8581e6032a61cc94c",
+    "Laboratorio4/docs/validacao.md": "33f6a0b6693836cc54aa0e74ce79d327ef90ee353cdcb54d5c70a6cbda9206b6",
+    "Laboratorio4/docs/validacao_dashboard.md": "821af37a4cfc4f8d26b9b83998f84cf591b0d3dfe51e2898d287b0b7c2b1ff5d",
+    "Laboratorio4/pytest.ini": "c28d7ee43186a578bc0f8867e26fdf7edcb0f1275b12d71d85a20e95a524c4ef",
+    "Laboratorio4/requirements.txt": "45bd6ee04a6782f7c7c9482dfa3e76704e455426f5ee9dd3782b068de534a25c",
+    "Laboratorio4/results/demo_interpretation.md": "9f783c275c74f3a5a841f0734ece590362d828a80ae8c85f56a69de94b5c9d7a",
+    "Laboratorio4/results/demo_s01.json": "c11c34e2bf9917115ebeaae222683b9517af3003a4e4dc2b109e729a42e6fd0d",
+    "Laboratorio4/results/simulated_sample.csv": "eb38c7e58e96016ebc74ac1130635923c2deec49b55007c8409090582497184a",
+    "Laboratorio4/src/__init__.py": "642983c72c2034829ad07eabfbf89a563fa1bb4ead5e420c4409ac8c0ed0a83b",
+    "Laboratorio4/src/collect.py": "d024d746c552d854a78d1af58b3ea3a3e5944cf038894d959cbdb4b33145ae96",
+    "Laboratorio4/src/data.py": "003f3165112ce79febc63da007744778111a0705d1912710060fc4b194407245",
+    "Laboratorio4/src/run_demo.py": "b0ee32c131311b2526daef05b0b20de4fa4430e2754f77e8c06cb3c059869e4a",
+    "Laboratorio4/src/statistics.py": "fea37210b76ade5e0ebce56d461ccacfe73229ee501199f4ea97c1c3d6a55fab",
+    "Laboratorio4/tests/test_contract.py": "5bf30c0e542030ebeefac47194f90a320aea6fce34fc21f0fd64f3dad8974f9a",
+    "Laboratorio4/tests/test_dashboard.py": "ca5275ba4a516eae2483ef64a58956980de17f2ddd26c5f7a5a17a8e9f41cbcb",
+    "Laboratorio4/tests/test_data.py": "86ff630dda6865731b1c4670ebbb82803e06a6e8f5035360af65697c1b10c668",
+    "Laboratorio4/tests/test_statistics.py": "807562817c8e96f2bae79274fca21248c8356949c9588940b743280024bf413f"
+  }
+}
