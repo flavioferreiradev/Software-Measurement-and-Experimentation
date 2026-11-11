@@ -1,10 +1,13 @@
-# Laboratório 04 — Sprint 01
+# Laboratório 04 — S01 e experimentos da S02
 
 O [trabalho de Luidi na Issue #30](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/issues/30)
 fornece dados reais, cenário P4, previsão inicial, gerador Bernoulli, teste Z,
 binomial exato e o contrato G1/G2. O [trabalho do Flávio na Issue #31](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/issues/31)
-acrescenta os gráficos e o dashboard inicial da S01. Estudos Q1/Q2/Q3,
-G3/G4 e apresentação pertencem às etapas posteriores.
+acrescenta os gráficos e o dashboard inicial da S01. A implementação da
+[Issue #34](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/issues/34)
+acrescenta os experimentos Q1/Q2/Q3 e o contrato G3/G4, descritos abaixo.
+G3/G4 visuais, inferência dos dados reais e seções finais do dashboard são
+responsabilidade do Flávio; a apresentação pertence à entrega final.
 
 Repositório: [Software-Measurement-and-Experimentation](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation).
 Project existente: [Kanban #3](https://github.com/users/flavioferreiradev/projects/3).
@@ -69,7 +72,8 @@ python -m src.run_demo --n 60 --p 0.08 --seed 42 --output .pytest-tmp/exemplo
 ```
 
 `generate_sample(n, p, seed=42)` e `test_proportion(sample, p0=0.05, alpha=0.05)`
-estão em `src/statistics.py`. Não há laço de experimentos da S02.
+estão em `src/statistics.py`. A demonstração S01 permanece separada dos
+experimentos S02.
 
 ## Dados e exemplo preservado
 
@@ -150,3 +154,56 @@ Laboratorio4/
 - [Contrato de integração v1](docs/contrato_integracao.md)
 - [Handoff para Flávio](docs/handoff_flavio.md)
 - [Validação do dashboard S01](docs/validacao_dashboard.md)
+
+## S02 — Q1, Q2 e Q3 (Issue #34)
+
+Entrega estatística publicada pelo
+[PR #36](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/pull/36).
+O PR registra a CI e a integração na main; o
+[handoff da Issue #35](docs/handoff_flavio_s02.md) orienta o início do trabalho
+visual do Flávio a partir dessa main.
+
+Status de integração: PR aberto; os jobs do GitHub Actions estão impedidos de
+iniciar por bloqueio de cobrança da conta. A main ainda não recebeu esta entrega.
+Os resultados estão disponíveis na branch `codex/lab04s02-luidi-34`; detalhes e
+evidências em [docs/validacao_s02.md](docs/validacao_s02.md). O merge depende da
+regularização externa e da aprovação dos checks em Windows e Ubuntu.
+
+Após a instalação, dentro de `Laboratorio4/`, um comando executa todo o protocolo:
+
+```bash
+python -m src.run_experiments
+```
+
+São 10.000 amostras por combinação de n∈{200,42} e
+p∈{0,05;0,075;0,10;0,125;0,15;0,20}, com seed raiz 42 e fluxos identificados
+por n/p. Total: 120.000 amostras; ambos os testes recebem as mesmas contagens.
+O ponto nulo é reutilizado em Q1 e na origem da curva Q2. Q3 compara as duas
+situações; n=42 tem aproximação normal questionável.
+
+O comando é offline e não reescreve nenhum artefato S01. Acrescenta:
+
+- `src/experiments.py` e `src/run_experiments.py`: núcleo e CLI da S02;
+- `results/experiments_s02.json`: contrato principal G3/G4, 12 células;
+- `results/experiments_s02.csv`: taxas e contagens em 24 linhas por teste;
+- `results/experiments_s02_summary.md`: resultados e confronto com a teoria;
+- `tests/test_experiments.py` e `tests/test_s02_contract.py`: 53 testes novos;
+- documentação e manifesto de preservação em `docs/`.
+
+As 24 taxas são confrontadas com probabilidades binomiais teóricas. ICs Wilson
+e erros-padrão descrevem a incerteza Monte Carlo. Os limiares de rejeição são
+K≥16 nos dois testes em n=200; em n=42, K≥5 no Z e K≥6 no exato. As diferenças
+de poder devem ser lidas junto às diferenças de erro tipo I.
+
+```bash
+python -m pytest -q
+```
+
+Em caso de restrição ao Temp do Windows, usar o diretório local descartável
+descrito na seção de validação. A suíte completa soma 129 testes, incluindo
+os 76 anteriores e os 53 novos.
+
+- [Metodologia S02 e limitações](docs/metodologia_s02.md)
+- [Contrato S02 v1 para G3/G4](docs/contrato_integracao_s02.md)
+- [Handoff S02 para Flávio](docs/handoff_flavio_s02.md)
+- [Relatório de validação e checklist #34](docs/validacao_s02.md)
