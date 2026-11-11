@@ -19,7 +19,6 @@
 [data-testid="stVerticalBlockBorderWrapper"] { background:#fff; border-color:#e2e9ef!important; border-radius:14px!important; }
 [data-testid="stVerticalBlockBorderWrapper"] .stMarkdown p { line-height:1.55; }
 .explanation { padding:1rem 1.2rem; background:#fff4e4; border-left:4px solid #e8a23a; border-radius:0 8px 8px 0; line-height:1.55; margin:1.3rem 0 2.5rem; }
-.future { padding:1.1rem 1.3rem; background:#ebeff4; color:#536779; border-radius:10px; line-height:1.8; }
 @media (max-width: 700px) {
   .block-container { padding:2.5rem .8rem 2.5rem; }
   .hero { padding:1.35rem 1.15rem; border-radius:14px; margin-bottom:1.6rem; }

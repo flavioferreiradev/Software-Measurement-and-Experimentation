@@ -1,7 +1,8 @@
-"""Gráficos de apresentação derivados exclusivamente do contrato G1/G2."""
+"""Gráficos de apresentação derivados dos contratos versionados G1–G4."""
 
 from bisect import bisect_left
 import json
+import math
 from pathlib import Path
 
 import plotly.graph_objects as go
@@ -23,6 +24,57 @@ def load_contract(path=ROOT / "results" / "demo_s01.json"):
     if payload.get("schema_version") != "1.0.0":
         raise ValueError("O dashboard requer o contrato G1/G2 v1.0.0.")
     return payload
+
+
+def load_s02_contract(path=ROOT / "results" / "experiments_s02.json"):
+    """Valida os campos consumidos por G3/G4 antes de abrir o dashboard."""
+    try:
+        payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise ValueError(f"Não foi possível ler o contrato G3/G4: {error}") from error
+    try:
+        if payload["schema_version"] != "1.0.0":
+            raise ValueError("O dashboard requer o contrato G3/G4 v1.0.0.")
+        protocol = payload["protocol"]
+        if not (0 < protocol["p0"] < 1 and 0 < protocol["alpha"] < 1 and protocol["repetitions"] > 0):
+            raise ValueError("Parâmetros inválidos no contrato G3/G4.")
+        scenarios = {item["id"]: item for item in payload["scenarios"]}
+        rows = {item["id"]: item for item in payload["rows"]}
+        if len(scenarios) != len(payload["scenarios"]) or len(scenarios) != 2 or len(rows) != len(payload["rows"]):
+            raise ValueError("Situações ou linhas duplicadas no contrato G3/G4.")
+        g3_ids, g4_ids = payload["g3"]["row_ids"], payload["g4"]["row_ids"]
+        if (len(g3_ids) != 2 or len(set(g3_ids)) != 2 or len(g4_ids) < 10
+                or not set(g3_ids) <= set(g4_ids)
+                or set(g4_ids) != set(rows) or len(set(g4_ids)) != len(g4_ids)):
+            raise ValueError("Seletores G3/G4 incompatíveis com as linhas.")
+        if not math.isclose(payload["g3"]["nominal_rate"], protocol["alpha"]):
+            raise ValueError("Referência nominal de G3 difere de α.")
+        for row in rows.values():
+            if row["scenario_id"] not in scenarios or row["n"] != scenarios[row["scenario_id"]]["n"]:
+                raise ValueError("Linha G3/G4 com situação ou n incompatível.")
+            if row["repetitions"] != protocol["repetitions"] or not math.isclose(row["delta"], row["p"] - protocol["p0"]):
+                raise ValueError("Linha G3/G4 com repetição ou efeito incompatível.")
+            if set(row["tests"]) != {"z", "binomial_exact"}:
+                raise ValueError("Linha G3/G4 sem os dois testes.")
+            for result in row["tests"].values():
+                rate = result["rejection_rate"]
+                low, high = result["mc_ci95_wilson"]
+                if (not all(math.isfinite(value) for value in (rate, low, high))
+                        or not 0 <= low <= rate <= high <= 1
+                        or result["rejections"] / row["repetitions"] != rate):
+                    raise ValueError("Taxa ou intervalo Monte Carlo inválido em G3/G4.")
+        if any(rows[key]["estimand"] != "type_i_error" for key in g3_ids):
+            raise ValueError("G3 deve apontar apenas para linhas sob H₀.")
+        if {rows[key]["scenario_id"] for key in g3_ids} != set(scenarios):
+            raise ValueError("G3 deve conter uma linha nula por situação.")
+    except (KeyError, TypeError, IndexError, ZeroDivisionError) as error:
+        raise ValueError("Contrato G3/G4 incompleto ou malformado.") from error
+    return payload
+
+
+def selected_rows(payload, selector):
+    rows = {row["id"]: row for row in payload["rows"]}
+    return [rows[key] for key in payload[selector]["row_ids"]]
 
 
 def style_figure(figure, *, height=345, legend_y=-0.27):
@@ -155,3 +207,70 @@ def g2_binomial(payload):
                         range=[-0.6, min(max(support) + 0.6, 13.5)])
     figure.update_yaxes(rangemode="tozero")
     return horizontal_y_label(figure, "Massa de probabilidade")
+
+
+def g3_type_i(payload):
+    """Taxas simuladas sob H₀, separadas por situação e teste."""
+    rows = selected_rows(payload, "g3")
+    scenarios = {item["id"]: item for item in payload["scenarios"]}
+    labels = [scenarios[row["scenario_id"]]["label_pt"] for row in rows]
+    figure = go.Figure()
+    upper = payload["g3"]["nominal_rate"]
+    for key, name, color in (("z", "Teste Z", TEAL), ("binomial_exact", "Binomial exato", VIOLET)):
+        results = [row["tests"][key] for row in rows]
+        rates = [result["rejection_rate"] for result in results]
+        lows = [result["mc_ci95_wilson"][0] for result in results]
+        highs = [result["mc_ci95_wilson"][1] for result in results]
+        upper = max(upper, *highs)
+        figure.add_trace(go.Bar(
+            x=labels, y=rates, name=name, marker_color=color,
+            text=[f"{rate:.2%}".replace(".", ",") for rate in rates], textposition="outside",
+            error_y=dict(type="data", symmetric=False,
+                         array=[high - rate for high, rate in zip(highs, rates)],
+                         arrayminus=[rate - low for low, rate in zip(lows, rates)],
+                         color=color, thickness=1.5, width=4),
+            customdata=[[result["theoretical_rejection_rate"], low, high]
+                        for result, low, high in zip(results, lows, highs)],
+            hovertemplate="%{x}<br>Taxa simulada: %{y:.2%}<br>Probabilidade teórica: %{customdata[0]:.2%}"
+                          "<br>IC MC 95%: [%{customdata[1]:.2%}, %{customdata[2]:.2%}]<extra>" + name + "</extra>",
+        ))
+    figure.add_hline(y=payload["g3"]["nominal_rate"], line=dict(color=RED, width=2, dash="dash"),
+                     annotation_text="α = 5% (nominal)", annotation_position="top left")
+    style_figure(figure, height=410, legend_y=-0.26)
+    figure.update_layout(title="G3 · Erro tipo I em 10.000 amostras por situação", barmode="group",
+                         margin=dict(l=58, r=25, t=75, b=75))
+    figure.update_yaxes(title="Amostras rejeitadas (%)", tickformat=".0%", range=[0, upper * 1.27])
+    figure.update_xaxes(title="Situação simulada")
+    return figure
+
+
+def g4_power(payload):
+    """Quatro séries em um gráfico; Δ=0 reutiliza a linha de erro tipo I."""
+    rows = selected_rows(payload, "g4")
+    scenarios = payload["scenarios"]
+    figure = go.Figure()
+    for scenario in scenarios:
+        subset = sorted((row for row in rows if row["scenario_id"] == scenario["id"]),
+                        key=lambda row: row["delta"])
+        for key, name, color, symbol, size in (
+            ("z", "Z", TEAL, "circle", 8),
+            ("binomial_exact", "Binomial exato", VIOLET, "diamond-open", 12),
+        ):
+            figure.add_trace(go.Scatter(
+                x=[100 * row["delta"] for row in subset],
+                y=[row["tests"][key]["rejection_rate"] for row in subset],
+                mode="lines+markers", name=f"{name} · n={scenario['n']}",
+                line=dict(color=color, width=(5 if key == "z" else 2) if scenario["n"] == 200 else 3,
+                          dash="dash" if scenario["n"] == 200 else "solid"),
+                marker=dict(symbol=symbol, size=size, color=color, line=dict(color=color, width=2)),
+                hovertemplate="Efeito: +%{x:g} p.p.<br>Rejeições: %{y:.1%}<extra>" +
+                              f"{name} · n={scenario['n']}" + "</extra>",
+            ))
+    style_figure(figure, height=500, legend_y=-0.22)
+    ticks = sorted({100 * row["delta"] for row in rows})
+    figure.update_layout(title="G4 · Rejeição por efeito e tamanho da amostra",
+                         margin=dict(l=60, r=25, t=75, b=100), hovermode="x unified")
+    figure.update_xaxes(title="Aumento da taxa de falhas Δ (pontos percentuais)", tickvals=ticks,
+                        ticktext=[f"{value:g}".replace(".", ",") for value in ticks], range=[-0.6, max(ticks) + 0.6])
+    figure.update_yaxes(title="Amostras rejeitadas (%)", tickformat=".0%", range=[0, 1.07], dtick=0.2)
+    return figure

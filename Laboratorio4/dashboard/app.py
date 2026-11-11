@@ -1,12 +1,17 @@
-"""Dashboard explicativo da Lab04S01. Execute: streamlit run dashboard/app.py."""
+"""Dashboard final da Lab04. Execute: streamlit run dashboard/app.py."""
 
+import math
 from pathlib import Path
 import sys
 
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from dashboard.charts import g1_histogram, g2_binomial, g2_z, load_contract
+from dashboard.charts import (
+    g1_histogram, g2_binomial, g2_z, g3_type_i, g4_power,
+    load_contract, load_s02_contract, selected_rows,
+)
+from dashboard.real_analysis import analyze_real
 
 
 REPOSITORY = "https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation"
@@ -22,7 +27,7 @@ def decimal(value, digits=6):
 
 
 def section(number, title, subtitle):
-    st.markdown(f'<div class="section-kicker">SEÇÃO {number} · LAB04S01</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-kicker">SEÇÃO {number} · LAB04</div>', unsafe_allow_html=True)
     st.header(title)
     st.markdown(f'<p class="section-subtitle">{subtitle}</p>', unsafe_allow_html=True)
 
@@ -33,8 +38,9 @@ st.markdown(f"<style>{(Path(__file__).parent / 'styles.css').read_text(encoding=
 
 try:
     data = load_contract()
+    s02 = load_s02_contract()
 except (OSError, ValueError) as error:
-    st.error(f"Não foi possível abrir o contrato versionado: {error}")
+    st.error(f"Não foi possível abrir os contratos versionados: {error}")
     st.stop()
 
 scenario = data["scenario"]
@@ -45,11 +51,19 @@ z = data["g2"]["z"]
 exact = data["g2"]["binomial_exact"]
 alpha = scenario["alpha"]
 p0 = scenario["p0"]
+if not (math.isclose(s02["protocol"]["p0"], p0) and math.isclose(s02["protocol"]["alpha"], alpha)):
+    st.error("Os protocolos S01 e S02 usam p₀ ou α diferentes.")
+    st.stop()
+try:
+    real_result = analyze_real(p0=p0, alpha=alpha)
+except (OSError, ValueError, KeyError) as error:
+    st.error(f"Não foi possível analisar o CSV real: {error}")
+    st.stop()
 
 st.markdown(
     f"""
     <div class="hero">
-      <div class="hero-top"><span class="eyebrow">PUC MINAS · LABORATÓRIO 04</span><span class="status">SPRINT 01 · G1 + G2</span></div>
+      <div class="hero-top"><span class="eyebrow">PUC MINAS · LABORATÓRIO 04</span><span class="status">ENTREGA FINAL · G1–G4</span></div>
       <h1>Testes de hipótese por dentro</h1>
       <p>Quando a taxa de falhas do CI parece superar a meta: o que o teste Z e o binomial exato realmente mostram?</p>
       <nav class="hero-links" aria-label="Links do projeto">
@@ -87,7 +101,7 @@ with right:
         f"{source['observed_period']['start'][:10]} e {source['observed_period']['end'][:10]} (UTC). "
         "Quatro execuções canceladas foram excluídas da amostra."
     )
-    st.markdown("Antes da simulação, o grupo previu que o binomial exato controlaria melhor o nível nominal com falhas raras e n pequeno; isso será avaliado na S02.")
+    st.markdown("Antes da simulação, o grupo previu que o binomial exato controlaria melhor o nível nominal com falhas raras e n pequeno. G3 e G4 confrontam essa previsão com os experimentos da S02.")
 
 st.divider()
 section("02", "Os dados · G1", "Histogramas discretos: os dois intervalos representam sucesso (0) e falha (1).")
@@ -156,10 +170,81 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+st.divider()
+section("04", "Erro tipo I · G3", "Q1 e Q3: 10.000 amostras sob p = 5% em cada tamanho amostral.")
+null_rows = {row["n"]: row for row in selected_rows(s02, "g3")}
+st.plotly_chart(g3_type_i(s02), width="stretch", theme=None, config={"displaylogo": False})
 st.markdown(
-    '<div class="future"><strong>Próximas etapas do dashboard</strong><br>'
-    "04 · Erro tipo I (G3) &nbsp;·&nbsp; 05 · Poder (G4) &nbsp;·&nbsp; "
-    "06 · Dados reais &nbsp;·&nbsp; 07 · Conclusão. "
-    "As simulações e conclusões dessas seções serão adicionadas nas próximas entregas.</div>",
-    unsafe_allow_html=True,
+    f"Em n=200, os dois testes rejeitaram H₀ em {percentage(null_rows[200]['tests']['z']['rejection_rate'], 2)} das amostras; "
+    "a linha de 5% representa o nível nominal, não uma taxa que a simulação precise atingir exatamente. "
+    f"Em n=42, o Z chegou a {percentage(null_rows[42]['tests']['z']['rejection_rate'], 2)} e o binomial exato a "
+    f"{percentage(null_rows[42]['tests']['binomial_exact']['rejection_rate'], 2)}: o primeiro excedeu o nível nominal e o segundo foi conservador. "
+    "As barras de erro são intervalos de incerteza Monte Carlo das 10.000 repetições, não intervalos para a taxa real de falhas."
+)
+
+st.divider()
+section("05", "Poder · G4", "Q2 e Q3: frequência de rejeição conforme aumenta a taxa geradora de falhas.")
+st.plotly_chart(g4_power(s02), width="stretch", theme=None, config={"displaylogo": False})
+power_rows = selected_rows(s02, "g4")
+at_ten_percent = {row["n"]: row for row in power_rows if math.isclose(row["p"], 0.10)}
+st.markdown(
+    "O ponto de efeito zero reutiliza Q1: ele mede erro tipo I, enquanto os pontos à direita medem poder sob alternativas. "
+    f"Quando p=10% (+5 p.p. sobre a meta), o Z e o exato rejeitaram em "
+    f"{percentage(at_ten_percent[200]['tests']['z']['rejection_rate'], 2)} das amostras de n=200; "
+    "as curvas coincidem porque ambos usam o limiar K≥16 nesse tamanho. "
+    f"Em n=42, foram {percentage(at_ten_percent[42]['tests']['z']['rejection_rate'], 2)} para o Z e "
+    f"{percentage(at_ten_percent[42]['tests']['binomial_exact']['rejection_rate'], 2)} para o exato; "
+    "a maior detecção do Z deve ser lida junto ao erro tipo I acima de 5% em G3."
+)
+
+st.divider()
+section("06", "Dados reais", "Inferência sobre o CSV validado, separada do exemplo simulado e das repetições Monte Carlo.")
+effect_pp = f"{100 * real_result['effect_difference']:+.2f}".replace(".", ",") + " p.p."
+st.markdown(
+    f"O recorte contém **{real_result['k']} falhas em {real_result['n']} execuções** "
+    f"(p̂ = **{percentage(real_result['p_hat'], 2)}**), diferença observada de "
+    f"**{effect_pp}** em relação à meta de 5%."
+)
+real_table = []
+for key, name in (("z", "Teste Z"), ("binomial_exact", "Binomial exato")):
+    test = real_result["tests"][key]
+    statistic = (f"Z = {decimal(test['statistic'], 3)}" if key == "z" else
+                 f"K = {test['count_statistic']}; p̂ = {percentage(test['statistic'], 2)}")
+    real_table.append({
+        "Teste": name,
+        "Estatística": statistic,
+        "p-valor": decimal(test["p_value"], 6),
+        "Efeito observado": effect_pp,
+        "Decisão (α=5%)": "Rejeitar H₀" if test["reject_h0"] else "Não rejeitar H₀",
+        "Conclusão": ("Evidência de taxa acima de 5%" if test["reject_h0"] else
+                      "Evidência insuficiente de taxa acima de 5%"),
+    })
+st.dataframe(real_table, hide_index=True, width="stretch")
+st.markdown(
+    "Os dois p-valores foram recalculados dos registros reais, apesar de a contagem de falhas coincidir com a amostra simulada da S01. "
+    "A diferença observada de 4,52 p.p. não basta, com estes testes e α=5%, para afirmar que a taxa supera a meta. "
+    "Não rejeitar H₀ também não demonstra que a meta foi cumprida."
+)
+
+st.divider()
+section("07", "Conclusão", "O que os experimentos e os dados reais permitem recomendar.")
+st.markdown(
+    "A previsão registrada antes da simulação se confirmou quanto ao **controle do erro tipo I em amostra pequena**: "
+    f"com n=42, o exato rejeitou {percentage(null_rows[42]['tests']['binomial_exact']['rejection_rate'], 2)} "
+    f"sob H₀, enquanto o Z rejeitou {percentage(null_rows[42]['tests']['z']['rejection_rate'], 2)}. "
+    "O exato ficou bem abaixo dos 5% por causa dos degraus da distribuição binomial; seu menor poder em G4 é o custo desse conservadorismo. "
+    "Com n=200, os testes produziram as mesmas decisões neste protocolo porque compartilham K≥16, embora seus p-valores não sejam geralmente iguais."
+)
+st.markdown(
+    f"Nos dados reais, p̂={percentage(real_result['p_hat'], 2)} é maior que a meta, mas nenhum dos testes rejeita H₀ a 5%; "
+    "o resultado é inconclusivo sobre uma taxa populacional acima da meta. "
+    "Para falhas raras e amostras pequenas sob o modelo iid Bernoulli, recomendamos o **binomial exato** se a prioridade é "
+    "não ultrapassar o erro tipo I nominal; aceitar sua menor capacidade de detecção ou coletar mais execuções. "
+    "Com amostra maior e aproximação normal avaliada, o Z pode ser uma alternativa; se houver dependência temporal ou "
+    "probabilidade de falha variável, é preciso revisar o modelo antes de confiar em qualquer um dos dois testes."
+)
+st.caption(
+    "Limites: as 42 execuções vieram de uma janela temporal por conveniência; commits, reruns e infraestrutura podem criar "
+    "dependência. A meta de 5% é pedagógica, não uma política declarada pelo projeto fonte. G3/G4 estudam tamanho "
+    "amostral sob Bernoulli iid; não simulam essas fontes de viés dos dados reais."
 )

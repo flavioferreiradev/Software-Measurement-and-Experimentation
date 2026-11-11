@@ -1,5 +1,11 @@
 # Handoff S02 para Flávio — Issue #34
 
+**Atualização após o handoff:** o [PR #36](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/pull/36)
+foi integrado à `main` no commit `ef5ceb7`. A Issue #35 parte dessa versão e
+consome o JSON versionado. As menções abaixo a PR aberto e bloqueio da CI
+registram o estado histórico anterior ao merge; o estado atual da entrega
+visual está no README e na Issue #35.
+
 A entrega estatística de Luidi foi desenvolvida na branch
 `codex/lab04s02-luidi-34`, sobre a main `19308d8`, e passou por validação local
 e auditoria externa aprovada. Sua publicação foi autorizada por Luidi.
@@ -10,7 +16,7 @@ Flávio deve começar a integração visual na main que contém
 essa entrega e seguir a sua própria
 [Issue #35](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation/issues/35).
 
-**Status de integração:** o PR #36 está aberto, com a CI impedida de iniciar
+**Status no momento do handoff:** o PR #36 estava aberto, com a CI impedida de iniciar
 por bloqueio de cobrança da conta no GitHub Actions. O merge ainda não ocorreu,
 portanto a main ainda não contém esta contribuição. Os artefatos estão publicados
 na branch `codex/lab04s02-luidi-34`; a pendência externa e as execuções estão em
