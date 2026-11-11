@@ -27,7 +27,12 @@ def decimal(value, digits=6):
 
 
 def section(number, title, subtitle):
-    st.markdown(f'<div class="section-kicker">SEÇÃO {number} · LAB04</div>', unsafe_allow_html=True)
+    st.markdown(
+        f'<div class="section-kicker" id="sec-{number}">'
+        f'<span class="section-number">{number}</span><span>LAB04 · EXPLORAÇÃO</span>'
+        '<span class="section-rule" aria-hidden="true"></span></div>',
+        unsafe_allow_html=True,
+    )
     st.header(title)
     st.markdown(f'<p class="section-subtitle">{subtitle}</p>', unsafe_allow_html=True)
 
@@ -64,13 +69,16 @@ st.markdown(
     f"""
     <div class="hero">
       <div class="hero-top"><span class="eyebrow">PUC MINAS · LABORATÓRIO 04</span><span class="status">ENTREGA FINAL · G1–G4</span></div>
-      <h1>Testes de hipótese por dentro</h1>
+      <div class="hero-orbit" aria-hidden="true"><span class="orbit-ring orbit-ring-outer"></span><span class="orbit-ring orbit-ring-inner"></span><span class="orbit-dot"></span><span class="orbit-core"><small>NÍVEL NOMINAL</small><strong>05<span>%</span></strong></span></div>
+      <div class="hero-label"><span class="live-dot"></span> UMA INVESTIGAÇÃO EM 7 CAPÍTULOS</div>
+      <h1>Testes de hipótese <span>por dentro</span></h1>
       <p>Quando a taxa de falhas do CI parece superar a meta: o que o teste Z e o binomial exato realmente mostram?</p>
       <nav class="hero-links" aria-label="Links do projeto">
-        <a href="./">↗ Dashboard</a>
-        <a href="{REPOSITORY}" target="_blank" rel="noopener noreferrer">↗ Repositório</a>
-        <a href="{PROJECT}" target="_blank" rel="noopener noreferrer">↗ GitHub Projects</a>
+        <a href="#sec-01">Explorar o experimento <span aria-hidden="true">↗</span></a>
+        <a href="{REPOSITORY}" target="_blank" rel="noopener noreferrer">Repositório <span aria-hidden="true">↗</span></a>
+        <a href="{PROJECT}" target="_blank" rel="noopener noreferrer">GitHub Projects <span aria-hidden="true">↗</span></a>
       </nav>
+      <div class="hero-bottom"><span>ROLE PARA DESCOBRIR <b aria-hidden="true">↓</b></span><span>H₀: p ≤ 5% <i>·</i> H₁: p &gt; 5%</span></div>
     </div>
     """,
     unsafe_allow_html=True,
@@ -175,6 +183,14 @@ section("04", "Erro tipo I · G3", "Q1 e Q3: 10.000 amostras sob p = 5% em cada 
 null_rows = {row["n"]: row for row in selected_rows(s02, "g3")}
 st.plotly_chart(g3_type_i(s02), width="stretch", theme=None, config={"displaylogo": False})
 st.markdown(
+    '<div class="insight-strip" aria-label="Achados de erro tipo I">'
+    '<div class="insight-heading"><span class="insight-eyebrow">LEITURA RÁPIDA · n=42</span><strong>O tamanho da amostra muda o jogo.</strong></div>'
+    f'<div class="insight-value teal"><span>TESTE Z</span><strong>{percentage(null_rows[42]["tests"]["z"]["rejection_rate"], 2)}</strong><small>acima de α</small></div>'
+    f'<div class="insight-value violet"><span>BINOMIAL EXATO</span><strong>{percentage(null_rows[42]["tests"]["binomial_exact"]["rejection_rate"], 2)}</strong><small>abaixo de α</small></div>'
+    '</div>',
+    unsafe_allow_html=True,
+)
+st.markdown(
     f"Em n=200, os dois testes rejeitaram H₀ em {percentage(null_rows[200]['tests']['z']['rejection_rate'], 2)} das amostras; "
     "a linha de 5% representa o nível nominal, não uma taxa que a simulação precise atingir exatamente. "
     f"Em n=42, o Z chegou a {percentage(null_rows[42]['tests']['z']['rejection_rate'], 2)} e o binomial exato a "
@@ -187,6 +203,13 @@ section("05", "Poder · G4", "Q2 e Q3: frequência de rejeição conforme aument
 st.plotly_chart(g4_power(s02), width="stretch", theme=None, config={"displaylogo": False})
 power_rows = selected_rows(s02, "g4")
 at_ten_percent = {row["n"]: row for row in power_rows if math.isclose(row["p"], 0.10)}
+st.markdown(
+    '<div class="power-banner"><div class="power-icon" aria-hidden="true">↗</div>'
+    '<div><span class="insight-eyebrow">PONTO DE COMPARAÇÃO · p=10%</span>'
+    f'<strong>Com 200 execuções, os dois testes detectam o aumento em {percentage(at_ten_percent[200]["tests"]["z"]["rejection_rate"], 2)} das amostras.</strong>'
+    '<span>Com 42 execuções, a capacidade de detecção cai e a escolha do teste pesa mais.</span></div></div>',
+    unsafe_allow_html=True,
+)
 st.markdown(
     "O ponto de efeito zero reutiliza Q1: ele mede erro tipo I, enquanto os pontos à direita medem poder sob alternativas. "
     f"Quando p=10% (+5 p.p. sobre a meta), o Z e o exato rejeitaram em "
@@ -201,9 +224,12 @@ st.divider()
 section("06", "Dados reais", "Inferência sobre o CSV validado, separada do exemplo simulado e das repetições Monte Carlo.")
 effect_pp = f"{100 * real_result['effect_difference']:+.2f}".replace(".", ",") + " p.p."
 st.markdown(
-    f"O recorte contém **{real_result['k']} falhas em {real_result['n']} execuções** "
-    f"(p̂ = **{percentage(real_result['p_hat'], 2)}**), diferença observada de "
-    f"**{effect_pp}** em relação à meta de 5%."
+    '<div class="real-stats" aria-label="Resumo dos dados reais">'
+    f'<div><span>RECORTE OBSERVADO</span><strong>{real_result["k"]}<em> / {real_result["n"]}</em></strong><small>falhas / execuções</small></div>'
+    f'<div><span>TAXA OBSERVADA</span><strong>{percentage(real_result["p_hat"], 2)}</strong><small>meta de 5%</small></div>'
+    f'<div><span>DIFERENÇA</span><strong>{effect_pp}</strong><small>acima da meta na amostra</small></div>'
+    '</div>',
+    unsafe_allow_html=True,
 )
 real_table = []
 for key, name in (("z", "Teste Z"), ("binomial_exact", "Binomial exato")):
@@ -228,6 +254,14 @@ st.markdown(
 
 st.divider()
 section("07", "Conclusão", "O que os experimentos e os dados reais permitem recomendar.")
+st.markdown(
+    '<div class="verdict"><span class="verdict-symbol" aria-hidden="true">✳</span><div>'
+    '<span class="insight-eyebrow">RECOMENDAÇÃO DO ESTUDO</span>'
+    '<strong>Para falhas raras com amostra pequena, prefira o binomial exato.</strong>'
+    '<p>Ele respeitou o nível nominal neste cenário; para ganhar poder, colete mais execuções.</p>'
+    '</div></div>',
+    unsafe_allow_html=True,
+)
 st.markdown(
     "A previsão registrada antes da simulação se confirmou quanto ao **controle do erro tipo I em amostra pequena**: "
     f"com n=42, o exato rejeitou {percentage(null_rows[42]['tests']['binomial_exact']['rejection_rate'], 2)} "
