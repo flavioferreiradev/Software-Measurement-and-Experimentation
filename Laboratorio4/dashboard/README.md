@@ -25,7 +25,7 @@ suporte K=0..42 e permite zoom. As áreas numéricas são as analíticas do JSON
 | 2 Dados / G1 | Contrato S01 | Histogramas das sequências real e simulada |
 | 3 Testes / G2 | Contrato S01 | Caudas e regiões críticas do exemplo simulado |
 | 4 Erro tipo I / G3 | Contrato S02 | Taxas sob H₀ por n e teste, linha nominal de 5%, IC Monte Carlo |
-| 5 Poder / G4 | Contrato S02 | Quatro séries em um gráfico, por efeito, n e teste |
+| 5 Poder / G4 | Contrato S02 | Quatro séries por efeito, n e teste; comparação interativa dos pontos simulados |
 | 6 Dados reais | CSV validado | Estatísticas, p-valores, efeito, decisões e conclusões |
 | 7 Conclusão | Resultados anteriores | Previsão versus achados, recomendação e limites |
 
@@ -35,7 +35,12 @@ os dois testes têm a mesma região crítica neste protocolo. Não deslocamos
 valores para separá-las. Azul petróleo identifica Z e violeta identifica o
 binomial exato em G3/G4; linha tracejada identifica n=200 em G4.
 
-Cada gráfico tem título, eixos/unidades e explicação junto à figura. As barras
+O painel interativo de G4 alterna entre n=42/200 e os seis níveis de p salvos no
+contrato S02, sem criar nova simulação. Em p=5%, as barras representam erro tipo I;
+nos demais níveis, representam poder. A barra de progresso e as animações são
+vinculadas à rolagem e respeitam a preferência por movimento reduzido.
+
+Cada gráfico tem título de seção, eixos/unidades e explicação junto à figura. As barras
 de erro de G3 medem apenas incerteza Monte Carlo. A tabela real e a conclusão
 distinguem observação de 9,52% de evidência estatística; o recorte temporal e
 a hipótese de execuções iid limitam inferências sobre o projeto fonte.

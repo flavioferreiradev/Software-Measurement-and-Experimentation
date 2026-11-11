@@ -74,7 +74,7 @@ st.markdown(
       <h1>Testes de hipótese <span>por dentro</span></h1>
       <p>Quando a taxa de falhas do CI parece superar a meta: o que o teste Z e o binomial exato realmente mostram?</p>
       <nav class="hero-links" aria-label="Links do projeto">
-        <a href="#sec-01">Explorar o experimento <span aria-hidden="true">↗</span></a>
+        <a href="#lab-interativo">Testar cenários <span aria-hidden="true">↘</span></a>
         <a href="{REPOSITORY}" target="_blank" rel="noopener noreferrer">Repositório <span aria-hidden="true">↗</span></a>
         <a href="{PROJECT}" target="_blank" rel="noopener noreferrer">GitHub Projects <span aria-hidden="true">↗</span></a>
       </nav>
@@ -219,6 +219,47 @@ st.markdown(
     f"{percentage(at_ten_percent[42]['tests']['binomial_exact']['rejection_rate'], 2)} para o exato; "
     "a maior detecção do Z deve ser lida junto ao erro tipo I acima de 5% em G3."
 )
+
+with st.container(border=True):
+    st.markdown(
+        '<div class="explorer-head" id="lab-interativo"><span class="insight-eyebrow">EXPLORE O EXPERIMENTO</span>'
+        '<strong>E se mudarmos a taxa de falhas?</strong>'
+        '<p>Selecione um ponto já simulado na S02. As barras mostram a proporção de rejeições nas mesmas 10.000 repetições por cenário.</p></div>',
+        unsafe_allow_html=True,
+    )
+    size_col, rate_col = st.columns([1, 1.5], gap="large")
+    with size_col:
+        selected_n = st.radio("Tamanho da amostra", [42, 200], horizontal=True,
+                              format_func=lambda n: f"n = {n}", key="explorer_n")
+    with rate_col:
+        p_levels = s02["protocol"]["p_levels"]
+        selected_p = st.select_slider(
+            "Taxa geradora de falhas (p)", options=p_levels,
+            value=min(p_levels, key=lambda value: abs(value - 0.10)),
+            format_func=lambda value: percentage(value, 1), key="explorer_p",
+        )
+    selected_row = next((row for row in power_rows
+                         if row["n"] == selected_n and math.isclose(row["p"], selected_p)), None)
+    if selected_row is None:
+        st.error("O contrato S02 não contém o cenário selecionado.")
+    else:
+        z_rate = selected_row["tests"]["z"]["rejection_rate"]
+        exact_rate = selected_row["tests"]["binomial_exact"]["rejection_rate"]
+        is_null = math.isclose(selected_p, p0)
+        effect = f"+{100 * (selected_p - p0):g}".replace(".", ",") + " p.p."
+        story = ("Aqui p = p₀: as rejeições são falsos alarmes (erro tipo I)." if is_null else
+                 f"Com p = {percentage(selected_p, 1)} ({effect} sobre a meta), estas rejeições medem poder.")
+        st.markdown(
+            f'<div class="live-comparison" aria-label="Comparação interativa para n={selected_n} e p={percentage(selected_p, 1)}">'
+            f'<div class="live-comparison-top"><span>{"ERRO TIPO I" if is_null else "PODER ESTATÍSTICO"} · n={selected_n}</span>'
+            f'<strong>p = {percentage(selected_p, 1)}</strong></div>'
+            f'<div class="compare-row"><div><span>TESTE Z</span><strong>{percentage(z_rate, 2)}</strong></div>'
+            f'<div class="compare-track"><span class="compare-fill z" style="width:{100 * z_rate:.2f}%"></span></div></div>'
+            f'<div class="compare-row"><div><span>BINOMIAL EXATO</span><strong>{percentage(exact_rate, 2)}</strong></div>'
+            f'<div class="compare-track"><span class="compare-fill exact" style="width:{100 * exact_rate:.2f}%"></span></div></div>'
+            f'<p class="live-story">{story}</p></div>',
+            unsafe_allow_html=True,
+        )
 
 st.divider()
 section("06", "Dados reais", "Inferência sobre o CSV validado, separada do exemplo simulado e das repetições Monte Carlo.")

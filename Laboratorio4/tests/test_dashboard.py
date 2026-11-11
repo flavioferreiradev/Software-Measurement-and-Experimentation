@@ -102,6 +102,20 @@ def test_streamlit_page_runs_offline_with_all_sections():
     assert len(page.dataframe) == 1
 
 
+def test_interactive_explorer_switches_between_null_error_and_power():
+    page = AppTest.from_file(str(ROOT / "dashboard" / "app.py"), default_timeout=20).run()
+    page.select_slider[0].set_value(0.05).run()
+    null_card = next(item.value for item in page.markdown if 'class="live-comparison"' in item.value)
+    assert "ERRO TIPO I · n=42" in null_card
+    assert "5,77%" in null_card and "1,95%" in null_card
+
+    page.radio[0].set_value(200).run()
+    page.select_slider[0].set_value(0.10).run()
+    power_card = next(item.value for item in page.markdown if 'class="live-comparison"' in item.value)
+    assert "PODER ESTATÍSTICO · n=200" in power_card
+    assert power_card.count("85,58%") == 2
+
+
 def test_one_command_reproduces_full_lab_without_changing_official_snapshots(tmp_path):
     official = [ROOT / "results" / name for name in (
         "demo_s01.json", "simulated_sample.csv", "demo_interpretation.md",

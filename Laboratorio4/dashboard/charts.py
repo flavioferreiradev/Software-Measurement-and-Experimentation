@@ -237,8 +237,7 @@ def g3_type_i(payload):
     figure.add_hline(y=payload["g3"]["nominal_rate"], line=dict(color=RED, width=2, dash="dash"),
                      annotation_text="α = 5% (nominal)", annotation_position="top left")
     style_figure(figure, height=410, legend_y=-0.26)
-    figure.update_layout(title="G3 · Erro tipo I em 10.000 amostras por situação", barmode="group",
-                         margin=dict(l=58, r=25, t=75, b=75))
+    figure.update_layout(barmode="group", margin=dict(l=58, r=25, t=52, b=75))
     figure.update_yaxes(title="Amostras rejeitadas (%)", tickformat=".0%", range=[0, upper * 1.27])
     figure.update_xaxes(title="Situação simulada")
     return figure
@@ -268,8 +267,7 @@ def g4_power(payload):
             ))
     style_figure(figure, height=500, legend_y=-0.22)
     ticks = sorted({100 * row["delta"] for row in rows})
-    figure.update_layout(title="G4 · Rejeição por efeito e tamanho da amostra",
-                         margin=dict(l=60, r=25, t=75, b=100), hovermode="x unified")
+    figure.update_layout(margin=dict(l=60, r=25, t=52, b=100), hovermode="x unified")
     figure.update_xaxes(title="Aumento da taxa de falhas Δ (pontos percentuais)", tickvals=ticks,
                         ticktext=[f"{value:g}".replace(".", ",") for value in ticks], range=[-0.6, max(ticks) + 0.6])
     figure.update_yaxes(title="Amostras rejeitadas (%)", tickformat=".0%", range=[0, 1.07], dtick=0.2)
