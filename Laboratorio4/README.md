@@ -16,7 +16,7 @@ Project existente: [Kanban #3](https://github.com/users/flavioferreiradev/projec
 ## Dashboard Next.js — execução local e Vercel
 
 O dashboard público agora é uma aplicação Next.js com App Router e exportação
-estática. Dentro de `Laboratorio4/`, com Node.js 20.9 ou superior:
+estática. Dentro de `Laboratorio4/`, com Node.js 26.x:
 
 ```bash
 npm ci
@@ -30,12 +30,13 @@ o SHA256 e a auditoria de `data/real_ci.csv` e recalcula os dois p-valores reais
 Não precisa de API, token, banco de dados ou processo Python em produção.
 
 **Publicar na Vercel:** importe este repositório e defina **Root Directory**
-como `Laboratorio4`. Selecione **Next.js** como framework. O comando de build é
-`npm run build`, com saída `out` (ambos já configurados no projeto); não há
-variáveis de ambiente. Enquanto esta mudança estiver apenas na branch
-`codex/lab04s02-flavio-35`, selecione essa branch para o deploy ou integre o PR
-à `main` antes de publicar a versão de produção. GitHub Actions e Vercel são
-processos independentes; o bloqueio de cobrança da CI não impede o build local.
+como `Laboratorio4`. O `vercel.json` seleciona o preset **Other**, executa
+`npm ci` e `npm run build` e publica a pasta estática `out`. Não há variáveis
+de ambiente. A versão final já está na `main`. Se o projeto foi criado antes
+desta correção com preset Next.js e Output Directory `out` no painel, faça um
+novo deploy da `main`: o `vercel.json` atualizado substitui essas opções.
+GitHub Actions e Vercel são processos independentes; o bloqueio de cobrança
+da CI não impede o build local.
 
 Os gráficos G1–G4, o comparador interativo e as sete seções são gerados a
 partir dos contratos versionados. O painel é estático: escolher n ou p mostra
