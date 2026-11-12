@@ -1,4 +1,8 @@
-# Dashboard final da Lab04 — Issues #31, #34 e #35
+# Dashboard Streamlit preservado — Issues #31, #34 e #35
+
+O dashboard principal para apresentação e publicação na Vercel está na versão
+Next.js em `Laboratorio4/app/`. Consulte `Laboratorio4/README.md` para executar
+e publicar. Este diretório preserva a implementação Streamlit e seus testes.
 
 Execute a partir de `Laboratorio4/`, após instalar `requirements.txt`:
 

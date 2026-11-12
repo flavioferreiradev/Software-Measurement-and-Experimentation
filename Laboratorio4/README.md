@@ -13,7 +13,35 @@ A apresentação oral encerra a entrega do grupo.
 Repositório: [Software-Measurement-and-Experimentation](https://github.com/flavioferreiradev/Software-Measurement-and-Experimentation).
 Project existente: [Kanban #3](https://github.com/users/flavioferreiradev/projects/3).
 
-## Instalação
+## Dashboard Next.js — execução local e Vercel
+
+O dashboard público agora é uma aplicação Next.js com App Router e exportação
+estática. Dentro de `Laboratorio4/`, com Node.js 20.9 ou superior:
+
+```bash
+npm ci
+npm run dev
+```
+
+Abra `http://localhost:3000`. Para conferir exatamente o artefato que será
+publicado, execute `npm run build`; os arquivos finais ficam em `out/`. A página
+usa `results/demo_s01.json` e `results/experiments_s02.json`; no build, valida
+o SHA256 e a auditoria de `data/real_ci.csv` e recalcula os dois p-valores reais.
+Não precisa de API, token, banco de dados ou processo Python em produção.
+
+**Publicar na Vercel:** importe este repositório e defina **Root Directory**
+como `Laboratorio4`. Selecione **Next.js** como framework. O comando de build é
+`npm run build`, com saída `out` (ambos já configurados no projeto); não há
+variáveis de ambiente. Enquanto esta mudança estiver apenas na branch
+`codex/lab04s02-flavio-35`, selecione essa branch para o deploy ou integre o PR
+à `main` antes de publicar a versão de produção. GitHub Actions e Vercel são
+processos independentes; o bloqueio de cobrança da CI não impede o build local.
+
+Os gráficos G1–G4, o comparador interativo e as sete seções são gerados a
+partir dos contratos versionados. O painel é estático: escolher n ou p mostra
+pontos já simulados, sem executar uma nova simulação no navegador.
+
+## Instalação do protocolo científico (Python)
 
 Python 3.12 ou 3.13. A partir da raiz do repositório:
 
@@ -50,7 +78,7 @@ oficiais versionados em `results/`; o dashboard usa esses snapshots e recalcula
 a inferência real diretamente de `data/real_ci.csv`. Para escolher outra pasta,
 use `python -m src.run_all --output CAMINHO`.
 
-## Abrir o dashboard por comando único
+## Dashboard Streamlit anterior (preservado para comparação)
 
 Dentro de `Laboratorio4/`, com o ambiente ativo:
 
@@ -58,17 +86,17 @@ Dentro de `Laboratorio4/`, com o ambiente ativo:
 streamlit run dashboard/app.py
 ```
 
-O navegador abrirá o endereço local informado pelo Streamlit. O comando não
-requer token, rede nem nova coleta. O topo contém links para o próprio
-dashboard, o repositório e o GitHub Projects. No Windows, execute o mesmo
-comando no PowerShell com `.venv` ativado; no Linux/macOS, use o mesmo comando
-no terminal após `source .venv/bin/activate`.
+O navegador abrirá o endereço local informado pelo Streamlit. Essa versão
+permanece no repositório para preservar a validação anterior; o dashboard de
+publicação e apresentação está em Next.js. No Windows, execute o mesmo comando
+no PowerShell com `.venv` ativado; no Linux/macOS, use o mesmo comando após
+`source .venv/bin/activate`.
 
 As sete seções são **Cenário**, **Os dados (G1)**, **Como os testes funcionam
 (G2)**, **Erro tipo I (G3)**, **Poder (G4)**, **Dados reais** e **Conclusão**.
 G2 permanece identificado como exemplo *simulado*; a tabela da seção 6 é
-recalculada do CSV *real*. Veja
-[dashboard/README.md](dashboard/README.md) para a arquitetura visual.
+recalculada do CSV *real*. Veja [dashboard/README.md](dashboard/README.md)
+para a arquitetura da versão Streamlit preservada.
 
 Interface reutilizável (para não sobrescrever a demonstração oficial):
 
@@ -120,6 +148,8 @@ python -m pytest -q --basetemp=.pytest-tmp/lab04-verification
 
 A suíte cobre estatística, contratos S01/S02, preservação dos dados, gráficos
 G1–G4, inferência do CSV real, execução integral e página Streamlit offline.
+`npm ci && npm run build` valida adicionalmente a versão Next.js e gera o
+artefato estático de publicação.
 O workflow está configurado para Windows e Ubuntu com Python 3.12. A situação
 da CI e a validação local da entrega final estão em
 [docs/validacao_dashboard_final.md](docs/validacao_dashboard_final.md).
@@ -148,6 +178,11 @@ Laboratorio4/
   docs/          auditoria, cenário, previsão, contrato, validação e handoff
   tests/         estatística, integridade e integração offline
   dashboard/     aplicação Streamlit, G1–G4, inferência real e estilos
+  app/           página e estilos Next.js (dashboard de publicação)
+  components/    gráficos SVG e interações React
+  lib/           contratos e análise do CSV real no build
+  package.json   comandos e dependências Next.js
+  vercel.json    configuração de saída estática para Vercel
   requirements.txt
   pytest.ini
 ```
