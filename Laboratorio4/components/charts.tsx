@@ -26,8 +26,8 @@ export function Histogram({ s01, group }: { s01: S01; group: "real" | "simulated
     {counts.map((count, i) => {
       const rate = count / n;
       return <g key={i} className="chart-item"><title>{`${s01.g1.labels[i]}: ${count}/${n} (${pct(rate, 2)})`}</title>
-        <rect x={bars[i]} y={y(rate)} width="105" height={260 - y(rate)} rx="9" fill={color} opacity={i === 0 ? .9 : .72} />
-        <text x={bars[i] + 52.5} y={y(rate) - 10} textAnchor="middle" className="bar-value">{pct(rate, 1)}</text>
+        <rect className="chart-bar" x={bars[i]} y={y(rate)} width="105" height={260 - y(rate)} rx="9" fill={color} opacity={i === 0 ? .9 : .72} />
+        <text x={bars[i] + 52.5} y={y(rate) - 10} textAnchor="middle" className="bar-value chart-detail">{pct(rate, 1)}</text>
         <text x={bars[i] + 52.5} y="285" textAnchor="middle" className="axis-text">{s01.g1.labels[i]}</text>
       </g>;
     })}
@@ -54,9 +54,9 @@ export function ZDistribution({ s01 }: { s01: S01 }) {
   return <svg className="chart-svg" viewBox="0 0 740 370" role="img" aria-label="G2. Distribuição normal aproximada do teste Z, cauda do p-valor e região de rejeição.">
     <text x="58" y="25" className="axis-title">Densidade de probabilidade</text>
     {[0, .1, .2, .3, .4].map(v => <g key={v}><line x1="58" x2="688" y1={sy(v)} y2={sy(v)} stroke={C.grid} strokeDasharray={v ? "4 5" : undefined}/><text x="48" y={sy(v)+4} textAnchor="end" className="axis-text">{dec(v, 1)}</text></g>)}
-    <path d={tailPath(z.x, z.pdf, z.observed, sx, sy, 285)} fill={C.amber} opacity=".58" />
-    <path d={tailPath(z.x, z.pdf, z.critical_value, sx, sy, 285)} fill={C.red} opacity=".76" />
-    <path d={curve} fill="none" stroke={C.teal} strokeWidth="3" />
+    <path className="chart-area" d={tailPath(z.x, z.pdf, z.observed, sx, sy, 285)} fill={C.amber} opacity=".58" />
+    <path className="chart-area" d={tailPath(z.x, z.pdf, z.critical_value, sx, sy, 285)} fill={C.red} opacity=".76" />
+    <path className="chart-curve" d={curve} fill="none" stroke={C.teal} strokeWidth="3" />
     <line x1={sx(z.observed)} x2={sx(z.observed)} y1="65" y2="285" stroke={C.teal} strokeWidth="2" strokeDasharray="4 5"/>
     <line x1={sx(z.critical_value)} x2={sx(z.critical_value)} y1="78" y2="285" stroke={C.red} strokeWidth="2" strokeDasharray="7 5"/>
     <rect x={sx(z.observed)-128} y="69" width="124" height="24" rx="5" fill="#f1faf8"/><text x={sx(z.observed)-8} y="86" textAnchor="end" className="annotation teal">observado {dec(z.observed)}</text>
@@ -85,8 +85,8 @@ export function BinomialDistribution({ s01 }: { s01: S01 }) {
       {visible.map((k, i) => {
         const mass = exact.pmf[i]; const inTail = exact.p_value_mask[i]; const critical = exact.rejection_mask[i];
         return <g key={k} className="chart-item"><title>{`K=${k}: massa ${dec(mass, 5)}${critical ? "; região crítica" : inTail ? "; área do p-valor" : ""}`}</title>
-          <rect x={sx(i)} y={sy(mass)} width={width} height={bottom-sy(mass)} rx={all ? 1 : 3} fill={inTail ? C.amber : C.violet} opacity={inTail ? .86 : .48}/>
-          {critical && <rect x={sx(i)} y={sy(mass)} width={width} height={bottom-sy(mass)} fill="url(#critical-hatch)" stroke={C.red} strokeWidth="1"/>}
+          <rect className="chart-bar" x={sx(i)} y={sy(mass)} width={width} height={bottom-sy(mass)} rx={all ? 1 : 3} fill={inTail ? C.amber : C.violet} opacity={inTail ? .86 : .48}/>
+          {critical && <rect className="chart-bar" x={sx(i)} y={sy(mass)} width={width} height={bottom-sy(mass)} fill="url(#critical-hatch)" stroke={C.red} strokeWidth="1"/>}
           {(all ? k % 5 === 0 : k % 2 === 0) && <text x={sx(i)+width/2} y="295" textAnchor="middle" className="axis-text">{k}</text>}
         </g>;
       })}
@@ -115,11 +115,11 @@ export function TypeIChart({ s02 }: { s02: S02 }) {
     {rows.map((row, i) => <g key={row.id}>{(["z", "binomial_exact"] as TestKey[]).map((key, j) => {
       const result = row.tests[key]; const x = groups[i] + (j === 0 ? -67 : 17); const color = key === "z" ? C.teal : C.violet;
       return <g key={key} className="chart-item"><title>{`${row.n} execuções, ${key === "z" ? "teste Z" : "binomial exato"}: ${pct(result.rejection_rate,2)}; IC MC 95% [${pct(result.mc_ci95_wilson[0],2)}, ${pct(result.mc_ci95_wilson[1],2)}]`}</title>
-        <rect x={x} y={sy(result.rejection_rate)} width="66" height={314-sy(result.rejection_rate)} rx="6" fill={color}/>
-        <line x1={x+33} x2={x+33} y1={sy(result.mc_ci95_wilson[0])} y2={sy(result.mc_ci95_wilson[1])} stroke={C.ink} strokeWidth="1.5"/>
-        <line x1={x+26} x2={x+40} y1={sy(result.mc_ci95_wilson[0])} y2={sy(result.mc_ci95_wilson[0])} stroke={C.ink} strokeWidth="1.5"/>
-        <line x1={x+26} x2={x+40} y1={sy(result.mc_ci95_wilson[1])} y2={sy(result.mc_ci95_wilson[1])} stroke={C.ink} strokeWidth="1.5"/>
-        <text x={x+33} y={sy(result.mc_ci95_wilson[1])-11} textAnchor="middle" className="bar-value">{pct(result.rejection_rate,2)}</text>
+        <rect className="chart-bar" x={x} y={sy(result.rejection_rate)} width="66" height={314-sy(result.rejection_rate)} rx="6" fill={color}/>
+        <line className="chart-detail" x1={x+33} x2={x+33} y1={sy(result.mc_ci95_wilson[0])} y2={sy(result.mc_ci95_wilson[1])} stroke={C.ink} strokeWidth="1.5"/>
+        <line className="chart-detail" x1={x+26} x2={x+40} y1={sy(result.mc_ci95_wilson[0])} y2={sy(result.mc_ci95_wilson[0])} stroke={C.ink} strokeWidth="1.5"/>
+        <line className="chart-detail" x1={x+26} x2={x+40} y1={sy(result.mc_ci95_wilson[1])} y2={sy(result.mc_ci95_wilson[1])} stroke={C.ink} strokeWidth="1.5"/>
+        <text x={x+33} y={sy(result.mc_ci95_wilson[1])-11} textAnchor="middle" className="bar-value chart-detail">{pct(result.rejection_rate,2)}</text>
       </g>;
     })}<text x={groups[i]+8} y="341" textAnchor="middle" className="axis-label">{row.n === 200 ? "Referência · n = 200" : "Amostra pequena · n = 42"}</text></g>)}
     <text x="450" y="374" textAnchor="middle" className="axis-title">Situação simulada</text>
@@ -136,13 +136,13 @@ export function PowerChart({ s02 }: { s02: S02 }) {
     <text x="73" y="28" className="axis-title">Amostras rejeitadas (%)</text>
     <Grid ticks={[0,.2,.4,.6,.8,1]} y={sy} x1={73} x2={858} labelX={60}/>
     {[0,2.5,5,7.5,10,15].map(v => <g key={v}><line x1={sx(v)} x2={sx(v)} y1="343" y2="348" stroke={C.muted}/><text x={sx(v)} y="365" textAnchor="middle" className="axis-text">{String(v).replace(".", ",")}</text></g>)}
-    {series.map(({scenario,key,values}) => {
+    {series.map(({scenario,key,values}, seriesIndex) => {
       const color = key === "z" ? C.teal : C.violet;
       const name = `${key === "z" ? "Teste Z" : "Binomial exato"} · n=${scenario.n}`;
       return <g key={`${scenario.id}-${key}`}>
-        <path d={values.map((row,i) => `${i ? "L" : "M"} ${sx(row.delta*100)} ${sy(row.tests[key].rejection_rate)}`).join(" ")} fill="none" stroke={color} strokeWidth={scenario.n === 200 && key === "z" ? 5 : key === "z" ? 3.5 : 2.5} strokeDasharray={scenario.n === 200 ? "9 6" : undefined}/>
+        <path className="chart-series" style={{ animationDelay: `${seriesIndex * 130}ms` }} d={values.map((row,i) => `${i ? "L" : "M"} ${sx(row.delta*100)} ${sy(row.tests[key].rejection_rate)}`).join(" ")} fill="none" stroke={color} strokeWidth={scenario.n === 200 && key === "z" ? 5 : key === "z" ? 3.5 : 2.5} strokeDasharray={scenario.n === 200 ? "9 6" : undefined}/>
         {values.map(row => <g key={row.id} className="chart-item"><title>{`${name}; aumento ${dec(row.delta*100,1)} p.p.; rejeições ${pct(row.tests[key].rejection_rate,2)}`}</title>
-          {key === "z" ? <circle cx={sx(row.delta*100)} cy={sy(row.tests[key].rejection_rate)} r="5" fill={color} stroke="white" strokeWidth="1.5"/> : <rect x={sx(row.delta*100)-5} y={sy(row.tests[key].rejection_rate)-5} width="10" height="10" transform={`rotate(45 ${sx(row.delta*100)} ${sy(row.tests[key].rejection_rate)})`} fill="white" stroke={color} strokeWidth="2"/>}
+          {key === "z" ? <circle className="chart-point" cx={sx(row.delta*100)} cy={sy(row.tests[key].rejection_rate)} r="5" fill={color} stroke="white" strokeWidth="1.5"/> : <rect className="chart-point" x={sx(row.delta*100)-5} y={sy(row.tests[key].rejection_rate)-5} width="10" height="10" transform={`rotate(45 ${sx(row.delta*100)} ${sy(row.tests[key].rejection_rate)})`} fill="white" stroke={color} strokeWidth="2"/>}
         </g>)}
       </g>;
     })}

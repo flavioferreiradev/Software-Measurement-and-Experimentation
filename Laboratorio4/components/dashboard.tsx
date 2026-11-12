@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { PointerEvent } from "react";
 import { BinomialDistribution, Histogram, PowerChart, TypeIChart, ZDistribution } from "./charts";
 import type { DashboardData, ExperimentRow, TestKey } from "@/lib/types";
 
@@ -17,18 +18,53 @@ const effect = (value: number) => `${(value * 100 >= 0 ? "+" : "") + (value * 10
 
 function Chapter({ id, number, title, subtitle, children }: { id: string; number: string; title: string; subtitle: string; children: React.ReactNode }) {
   return <section id={id} data-section className="chapter">
+    <span className="chapter-watermark" aria-hidden="true">{number}</span>
     <div className="section-heading reveal"><div className="section-kicker"><span className="section-number">{number}</span><span>LAB04 · EXPLORAÇÃO</span><span className="section-rule"/></div>
       <h2>{title}</h2><p className="section-subtitle">{subtitle}</p></div>
     {children}
   </section>;
 }
 
+function pointerGlow(event: PointerEvent<HTMLElement>) {
+  if (event.pointerType === "touch" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const card = event.currentTarget;
+  const bounds = card.getBoundingClientRect();
+  card.style.setProperty("--spot-x", `${event.clientX - bounds.left}px`);
+  card.style.setProperty("--spot-y", `${event.clientY - bounds.top}px`);
+}
+
+function AnimatedValue({ value, digits = 2, prefix = "", suffix = "%" }: { value: number; digits?: number; prefix?: string; suffix?: string }) {
+  const node = useRef<HTMLSpanElement>(null);
+  const [display, setDisplay] = useState(value);
+  const format = (current: number) => `${prefix}${current.toFixed(digits).replace(".", ",")}${suffix}`;
+  useEffect(() => {
+    if (!node.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let frame = 0;
+    const observer = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      observer.disconnect();
+      setDisplay(0);
+      const start = performance.now();
+      const duration = 1150;
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / duration);
+        setDisplay(value * (1 - Math.pow(1 - t, 3)));
+        if (t < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    }, { threshold: .5 });
+    observer.observe(node.current);
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
+  }, [value]);
+  return <span ref={node} aria-label={format(value)}><span aria-hidden="true">{format(display)}</span></span>;
+}
+
 function Metric({ label, value, foot }: { label: string; value: string | number; foot: string }) {
-  return <div className="metric-card reveal"><span>{label}</span><strong>{value}</strong><small>{foot}</small></div>;
+  return <div className="metric-card reveal" onPointerMove={pointerGlow}><span>{label}</span><strong>{value}</strong><small>{foot}</small></div>;
 }
 
 function FigureCard({ title, meta, children, note }: { title: string; meta: string; children: React.ReactNode; note: React.ReactNode }) {
-  return <article className="figure-card reveal"><div className="figure-head"><div><h3>{title}</h3><p>{meta}</p></div><span className="figure-action" aria-hidden="true">↗</span></div><div className="figure-body">{children}</div><p className="figure-note">{note}</p></article>;
+  return <article className="figure-card reveal" onPointerMove={pointerGlow}><div className="figure-head"><div><h3>{title}</h3><p>{meta}</p></div><span className="figure-action" aria-hidden="true">↗</span></div><div className="figure-body">{children}</div><p className="figure-note">{note}</p></article>;
 }
 
 function rowsFor(s02: DashboardData["s02"], selector: "g3" | "g4") {
@@ -68,6 +104,7 @@ export default function Dashboard({ data }: { data: DashboardData }) {
   const nullByN = Object.fromEntries(nullRows.map(row => [row.n, row]));
   const tenByN = Object.fromEntries(powerRows.filter(row => Math.abs(row.p-.1)<1e-12).map(row => [row.n,row]));
   const realEffect = effect(real.effect_difference);
+  const activeChapter = chapters.findIndex(([id]) => id === active) + 1;
 
   useEffect(() => {
     document.documentElement.classList.add("motion-ready");
@@ -85,15 +122,17 @@ export default function Dashboard({ data }: { data: DashboardData }) {
 
   return <>
     <div className="scroll-progress" ref={progress} aria-hidden="true" />
-    <header className="site-header"><a href="#top" className="brand" aria-label="Voltar ao início"><span className="brand-mark">∑</span><span>LAB<span>04</span></span></a><nav aria-label="Navegação principal"><a href="#cenario">Estudo</a><a href="#poder">Resultados</a><a href="#lab-interativo">Explorar</a><a href="#conclusao" className="header-cta">Conclusão <span aria-hidden="true">↗</span></a></nav></header>
+    <header className="site-header"><a href="#top" className="brand" aria-label="Voltar ao início"><span className="brand-mark">∑</span><span>LAB<span>04</span></span></a><span className="header-chapter" aria-hidden="true"><i/> CAPÍTULO {String(activeChapter).padStart(2,"0")} / 07</span><nav aria-label="Navegação principal"><a href="#cenario">Estudo</a><a href="#poder">Resultados</a><a href="#lab-interativo">Explorar</a><a href="#conclusao" className="header-cta">Conclusão <span aria-hidden="true">↗</span></a></nav></header>
     <div className="page-shell" id="top"><aside className="chapter-rail" aria-label="Capítulos do dashboard"><span className="rail-title">NESTA PÁGINA</span>{chapters.map(([id,label],i) => <a href={`#${id}`} key={id} className={active===id ? "active" : ""}><span>{String(i+1).padStart(2,"0")}</span>{label}</a>)}<div className="rail-foot">P4 · Z × binomial exato</div></aside>
     <main>
-      <div className="hero reveal"><div className="hero-top"><span className="eyebrow">PUC MINAS · LABORATÓRIO 04</span><span className="status"><span className="status-dot"/> ENTREGA FINAL · G1–G4</span></div>
+      <div className="hero reveal" onPointerMove={pointerGlow}><div className="hero-scan" aria-hidden="true"/><div className="hero-top"><span className="eyebrow">PUC MINAS · LABORATÓRIO 04</span><span className="status"><span className="status-dot"/> ENTREGA FINAL · G1–G4</span></div>
         <div className="hero-orbit" aria-hidden="true"><span className="orbit-ring orbit-ring-outer"/><span className="orbit-ring orbit-ring-inner"/><span className="orbit-dot"/><span className="orbit-core"><small>NÍVEL NOMINAL</small><strong>05<span>%</span></strong></span></div>
         <div className="hero-label"><span className="live-dot"/> UMA INVESTIGAÇÃO EM 7 CAPÍTULOS</div><h1>Testes de hipótese <span>por dentro</span></h1><p>Quando a taxa de falhas do CI parece superar a meta: o que o teste Z e o binomial exato realmente mostram?</p>
         <nav className="hero-links" aria-label="Links do projeto"><a href="#lab-interativo">Testar cenários <span aria-hidden="true">↘</span></a><a href="/">Dashboard <span aria-hidden="true">↗</span></a><a href={REPOSITORY} target="_blank" rel="noopener noreferrer">Repositório <span aria-hidden="true">↗</span></a><a href={PROJECT} target="_blank" rel="noopener noreferrer">GitHub Projects <span aria-hidden="true">↗</span></a></nav>
         <div className="hero-bottom"><span>ROLE PARA DESCOBRIR <b aria-hidden="true">↓</b></span><span>H₀: p ≤ 5% <i>·</i> H₁: p &gt; 5%</span></div>
       </div>
+
+      <div className="story-map reveal" aria-label="Etapas do estudo"><div className="story-step"><span>01</span><strong>Observar</strong><small>Dados do CI</small></div><div className="story-step"><span>02</span><strong>Testar</strong><small>Z e binomial exato</small></div><div className="story-step"><span>03</span><strong>Simular</strong><small>Erro e poder</small></div><div className="story-step"><span>04</span><strong>Decidir</strong><small>Recomendação</small></div></div>
 
       <Chapter id="cenario" number="01" title="Cenário" subtitle="Uma pergunta de qualidade de software, duas maneiras de calcular a cauda sob H₀.">
         <p className="question reveal">{s01.scenario.question_pt}</p>
@@ -115,7 +154,7 @@ export default function Dashboard({ data }: { data: DashboardData }) {
 
       <Chapter id="erro" number="04" title="Erro tipo I · G3" subtitle="Q1 e Q3: 10.000 amostras sob p = 5% em cada tamanho amostral.">
         <div className="wide-figure reveal"><TypeIChart s02={s02}/></div>
-        <div className="insight-strip reveal"><div className="insight-heading"><span className="micro-label">LEITURA RÁPIDA · n=42</span><strong>O tamanho da amostra muda o jogo.</strong></div><div className="insight-value teal"><span>TESTE Z</span><strong>{pct(nullByN[42].tests.z.rejection_rate,2)}</strong><small>acima de α</small></div><div className="insight-value violet"><span>BINOMIAL EXATO</span><strong>{pct(nullByN[42].tests.binomial_exact.rejection_rate,2)}</strong><small>abaixo de α</small></div></div>
+        <div className="insight-strip reveal"><div className="insight-heading"><span className="micro-label">LEITURA RÁPIDA · n=42</span><strong>O tamanho da amostra muda o jogo.</strong></div><div className="insight-value teal"><span>TESTE Z</span><strong><AnimatedValue value={100*nullByN[42].tests.z.rejection_rate}/></strong><small>acima de α</small></div><div className="insight-value violet"><span>BINOMIAL EXATO</span><strong><AnimatedValue value={100*nullByN[42].tests.binomial_exact.rejection_rate}/></strong><small>abaixo de α</small></div></div>
         <p className="section-prose reveal">Em n=200, ambos rejeitaram H₀ em {pct(nullByN[200].tests.z.rejection_rate,2)} das amostras. A linha de 5% é nominal, não uma taxa que a simulação precise atingir exatamente. Em n=42, o Z chegou a {pct(nullByN[42].tests.z.rejection_rate,2)} e o binomial exato a {pct(nullByN[42].tests.binomial_exact.rejection_rate,2)}: o primeiro excedeu o nível nominal e o segundo foi conservador. As barras de erro mostram incerteza Monte Carlo das 10.000 repetições, não a incerteza da taxa real de falhas.</p>
       </Chapter>
 
@@ -127,7 +166,7 @@ export default function Dashboard({ data }: { data: DashboardData }) {
       </Chapter>
 
       <Chapter id="reais" number="06" title="Dados reais" subtitle="Inferência sobre o CSV validado, separada do exemplo simulado e das repetições Monte Carlo.">
-        <div className="real-stats reveal"><div><span>RECORTE OBSERVADO</span><strong>{real.k}<em> / {real.n}</em></strong><small>falhas / execuções</small></div><div><span>TAXA OBSERVADA</span><strong>{pct(real.p_hat,2)}</strong><small>meta de 5%</small></div><div><span>DIFERENÇA</span><strong>{realEffect}</strong><small>acima da meta na amostra</small></div></div>
+        <div className="real-stats reveal"><div><span>RECORTE OBSERVADO</span><strong>{real.k}<em> / {real.n}</em></strong><small>falhas / execuções</small></div><div><span>TAXA OBSERVADA</span><strong><AnimatedValue value={100*real.p_hat}/></strong><small>meta de 5%</small></div><div><span>DIFERENÇA</span><strong><AnimatedValue value={100*real.effect_difference} prefix="+" suffix=" p.p."/></strong><small>acima da meta na amostra</small></div></div>
         <div className="table-scroll reveal"><table><caption>Resultados dos dois testes nos dados reais, α=5%</caption><thead><tr><th>Teste</th><th>Estatística</th><th>p-valor</th><th>Efeito observado</th><th>Decisão</th><th>Conclusão</th></tr></thead><tbody>{(["z","binomial_exact"] as TestKey[]).map(key => { const test = real.tests[key]; return <tr key={key}><th scope="row"><span className={`test-dot ${key === "z" ? "z" : "exact"}`}/>{key === "z" ? "Teste Z" : "Binomial exato"}</th><td>{key === "z" ? `Z = ${dec(test.statistic,3)}` : `K = ${test.count_statistic}; p̂ = ${pct(test.statistic,2)}`}</td><td className="number-cell">{dec(test.p_value)}</td><td>{realEffect}</td><td><span className={`decision ${test.reject_h0 ? "reject" : "retain"}`}>{test.reject_h0 ? "Rejeitar H₀" : "Não rejeitar H₀"}</span></td><td>{test.reject_h0 ? "Evidência de taxa acima de 5%" : "Evidência insuficiente de taxa acima de 5%"}</td></tr>; })}</tbody></table></div>
         <p className="section-prose reveal">Os p-valores foram recalculados dos registros reais, apesar de a contagem de falhas coincidir com a amostra simulada da S01. A diferença observada de 4,52 p.p. não basta, com α=5%, para afirmar que a taxa supera a meta. Não rejeitar H₀ também não demonstra que a meta foi cumprida.</p>
       </Chapter>
