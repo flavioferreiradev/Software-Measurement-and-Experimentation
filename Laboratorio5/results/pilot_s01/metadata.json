@@ -1,0 +1,181 @@
+{
+  "config": {
+    "rows": 20000,
+    "customers": 1000,
+    "queries": 30,
+    "blocks": 2,
+    "inserts": 100,
+    "replications": 3,
+    "seed": 20261118
+  },
+  "environment": {
+    "python": "3.15.2",
+    "sqlite": "3.53.4",
+    "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+    "journal_mode": "DELETE",
+    "synchronous": "FULL",
+    "cache_size_kib": 2000
+  },
+  "schema": "CREATE TABLE orders (\n    order_id INTEGER PRIMARY KEY,\n    customer_id INTEGER NOT NULL,\n    created_at INTEGER NOT NULL,\n    amount_cents INTEGER NOT NULL,\n    status INTEGER NOT NULL\n)",
+  "index": "CREATE INDEX idx_customer_created ON orders(customer_id, created_at DESC)",
+  "query": "SELECT order_id, created_at, amount_cents\nFROM orders WHERE customer_id = ? ORDER BY created_at DESC LIMIT 20",
+  "data_type": "synthetic_no_personal_data",
+  "replications": [
+    {
+      "replication": 1,
+      "seed": 20261118,
+      "baseline_sha256": "48aff162ed59b8c9c54a9ca37a89ace56ed1457dc26b0e7ca1ddd47b767fda3d",
+      "query_customer_ids": [
+        958,
+        405,
+        201,
+        767,
+        472,
+        982,
+        711,
+        168,
+        310,
+        649,
+        750,
+        847,
+        426,
+        589,
+        36,
+        499,
+        412,
+        688,
+        951,
+        348,
+        151,
+        779,
+        531,
+        249,
+        596,
+        265,
+        103,
+        76,
+        271,
+        546
+      ],
+      "query_plans": {
+        "without_index": [
+          "SCAN orders",
+          "USE TEMP B-TREE FOR ORDER BY"
+        ],
+        "with_index": [
+          "SEARCH orders USING INDEX idx_customer_created (customer_id=?)"
+        ]
+      },
+      "index_build_ms": 6.987041,
+      "database_bytes": {
+        "without_index": 421888,
+        "with_index": 782336
+      },
+      "final_rows": 20200
+    },
+    {
+      "replication": 2,
+      "seed": 20262127,
+      "baseline_sha256": "094f85fa3058c55b2dc9b8ec1dfc6b257380fb60f450f24d621ab0555d4c92d3",
+      "query_customer_ids": [
+        519,
+        350,
+        156,
+        922,
+        528,
+        696,
+        891,
+        12,
+        586,
+        72,
+        260,
+        541,
+        881,
+        448,
+        658,
+        889,
+        482,
+        781,
+        539,
+        253,
+        536,
+        592,
+        877,
+        776,
+        341,
+        324,
+        913,
+        577,
+        115,
+        460
+      ],
+      "query_plans": {
+        "without_index": [
+          "SCAN orders",
+          "USE TEMP B-TREE FOR ORDER BY"
+        ],
+        "with_index": [
+          "SEARCH orders USING INDEX idx_customer_created (customer_id=?)"
+        ]
+      },
+      "index_build_ms": 5.857875,
+      "database_bytes": {
+        "without_index": 421888,
+        "with_index": 786432
+      },
+      "final_rows": 20200
+    },
+    {
+      "replication": 3,
+      "seed": 20263136,
+      "baseline_sha256": "d9c5d90dcfd00f84d823d1bfa9019256cf3e4108e5ed00fe0182fab4b5b8a118",
+      "query_customer_ids": [
+        660,
+        878,
+        77,
+        684,
+        951,
+        819,
+        472,
+        876,
+        854,
+        758,
+        25,
+        965,
+        473,
+        188,
+        71,
+        222,
+        181,
+        474,
+        691,
+        174,
+        5,
+        792,
+        49,
+        279,
+        676,
+        935,
+        781,
+        368,
+        564,
+        467
+      ],
+      "query_plans": {
+        "without_index": [
+          "SCAN orders",
+          "USE TEMP B-TREE FOR ORDER BY"
+        ],
+        "with_index": [
+          "SEARCH orders USING INDEX idx_customer_created (customer_id=?)"
+        ]
+      },
+      "index_build_ms": 5.54075,
+      "database_bytes": {
+        "without_index": 421888,
+        "with_index": 786432
+      },
+      "final_rows": 20200
+    }
+  ]
+}

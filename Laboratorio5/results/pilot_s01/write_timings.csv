@@ -1,0 +1,13 @@
+replication,block,condition,batch_count,duration_ns,ns_per_row
+1,1,with_index,100,8179834,81798.34
+1,1,without_index,100,1220209,12202.09
+1,2,without_index,100,2140625,21406.25
+1,2,with_index,100,5986209,59862.09
+2,1,without_index,100,766584,7665.84
+2,1,with_index,100,2555167,25551.67
+2,2,with_index,100,1792792,17927.92
+2,2,without_index,100,521125,5211.25
+3,1,with_index,100,2267583,22675.83
+3,1,without_index,100,598959,5989.59
+3,2,without_index,100,803542,8035.42
+3,2,with_index,100,1563042,15630.42
