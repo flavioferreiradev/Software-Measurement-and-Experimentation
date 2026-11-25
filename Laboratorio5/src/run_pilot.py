@@ -51,7 +51,7 @@ def generated_rows(count: int, customers: int, seed: int, first_id: int = 1):
         )
 
 
-def row_digest(rows: list[tuple[int, int, int, int, int]]) -> str:
+def row_digest(rows) -> str:
     digest = hashlib.sha256()
     for row in rows:
         digest.update((",".join(map(str, row)) + "\n").encode("ascii"))
@@ -132,10 +132,10 @@ def run(config: argparse.Namespace) -> dict:
                     query_rng.shuffle(query_order)
                     condition_order = CONDITIONS if (replication + block) % 2 == 0 else CONDITIONS[::-1]
 
-                    # Validação e aquecimento iguais antes de cada bloco medido.
-                    assert_same_answers(connections, query_order[: min(10, len(query_order))])
+                    # Validar todas as consultas e aquecer igualmente antes da medição.
+                    assert_same_answers(connections, query_order)
                     for condition in CONDITIONS:
-                        for customer_id in query_order[: min(10, len(query_order))]:
+                        for customer_id in query_order:
                             connections[condition].execute(QUERY, (customer_id,)).fetchall()
 
                     for condition in condition_order:
@@ -173,19 +173,26 @@ def run(config: argparse.Namespace) -> dict:
                             "duration_ns": duration_ns,
                             "ns_per_row": duration_ns / config.inserts,
                         })
-                    assert_same_answers(connections, query_order[: min(10, len(query_order))])
+                    assert_same_answers(connections, query_order)
 
                 expected_rows = config.rows + config.blocks * config.inserts
+                final_hashes = {}
                 for condition in CONDITIONS:
                     actual_rows = connections[condition].execute("SELECT count(*) FROM orders").fetchone()[0]
                     if actual_rows != expected_rows:
                         raise AssertionError(f"Contagem incorreta em {condition}: {actual_rows}")
+                    final_hashes[condition] = row_digest(
+                        connections[condition].execute("SELECT * FROM orders ORDER BY order_id")
+                    )
                     connections[condition].close()
+                if len(set(final_hashes.values())) != 1:
+                    raise AssertionError("Os conteúdos finais dos bancos são diferentes")
                 connections.clear()
                 replications.append({
                     "replication": replication + 1,
                     "seed": replication_seed,
                     "baseline_sha256": row_digest(baseline),
+                    "final_sha256": final_hashes["without_index"],
                     "query_customer_ids": customer_ids,
                     "query_plans": plans,
                     "index_build_ms": index_build_ns / 1_000_000 if index_build_ns is not None else None,
@@ -220,7 +227,7 @@ def run(config: argparse.Namespace) -> dict:
         size_summary[condition] = {"median_bytes": statistics.median(sizes)}
 
     summary = {
-        "scope": "pilot_exploratory_not_final_inference",
+        "scope": getattr(config, "scope", "pilot_exploratory_not_final_inference"),
         "read_latency": read_summary,
         "write_latency": write_summary,
         "database_size": size_summary,
@@ -229,7 +236,7 @@ def run(config: argparse.Namespace) -> dict:
         ),
     }
     metadata = {
-        "config": {key: value for key, value in vars(config).items() if key != "output_dir"},
+        "config": {key: value for key, value in vars(config).items() if key not in ("output_dir", "scope")},
         "environment": {
             "python": platform.python_version(),
             "sqlite": sqlite3.sqlite_version,

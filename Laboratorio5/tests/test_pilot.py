@@ -10,6 +10,8 @@ from pathlib import Path
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "src" / "run_pilot.py"
+sys.path.insert(0, str(SCRIPT.parent))
+from validate_full_s02 import validate
 
 
 class PilotTest(unittest.TestCase):
@@ -46,6 +48,22 @@ class PilotTest(unittest.TestCase):
                 [rep["query_customer_ids"] for rep in outputs[0]["replications"]],
                 [rep["query_customer_ids"] for rep in outputs[1]["replications"]],
             )
+            report = validate(Path(directory) / "1", outputs[0]["config"],
+                              outputs[0]["environment"]["sqlite"])
+            self.assertEqual((report["pairs"], report["read_records"], report["write_batches"]),
+                             (2, 48, 8))
+
+            read_path = Path(directory) / "1" / "read_timings.csv"
+            with read_path.open(newline="", encoding="utf-8") as stream:
+                rows = list(csv.DictReader(stream))
+            rows[0]["customer_id"] = str(int(rows[0]["customer_id"]) + 1)
+            with read_path.open("w", newline="", encoding="utf-8") as stream:
+                writer = csv.DictWriter(stream, fieldnames=list(rows[0]), lineterminator="\n")
+                writer.writeheader()
+                writer.writerows(rows)
+            with self.assertRaisesRegex(ValueError, "IDs de cliente divergentes|Consultas não pareadas"):
+                validate(Path(directory) / "1", outputs[0]["config"],
+                         outputs[0]["environment"]["sqlite"])
 
 
 if __name__ == "__main__":
