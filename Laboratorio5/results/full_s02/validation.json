@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "pairs": 20,
+  "read_records": 6000,
+  "write_batches": 120,
+  "sqlite_version": "3.53.4",
+  "source_sha256": {
+    "read_timings.csv": "4504bac2d23676dc2b5539ccb958ead5a553e4be7592ebf5e113758ff4ec1985",
+    "write_timings.csv": "0624b20f53bb2de41985461c51aa9397f19715fa687378ea45bf97d2b6dc6a99",
+    "metadata.json": "74e190b0246863e507bd0ba4da4a6065ca70b530a65ea3b4a42b577777cfc723",
+    "summary.json": "670626909aac06271b8b5218860ef53f5b9b45d7dcc876064b15aa4113eddd9e"
+  }
+}
