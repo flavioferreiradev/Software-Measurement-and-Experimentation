@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="820" viewBox="0 0 1120 820">
+<title>Diferenças pareadas e incerteza da mediana</title><desc>Pontos: 20 pares. Linha: mediana; faixa: IC por ordem, cobertura mínima de 95,86%.</desc>
+<rect width="100%" height="100%" fill="#fafbfc"/>
+<style>text{font-family:Arial,sans-serif;fill:#192b3b;font-size:14px}.small{font-size:12px}.heading{font-size:22px;font-weight:bold}</style>
+<text x="40" y="36" class="heading">Diferenças pareadas e incerteza da mediana</text>
+<text x="40" y="61">Pontos: 20 pares. Linha: mediana; faixa: IC por ordem, cobertura mínima de 95,86%.</text>
+<text x="40" y="127">Leitura: mediana</text>
+<text x="40" y="149" class="small">Sem − com (ms/consulta)</text>
+<rect x="968.97" y="100" width="14.63" height="72" fill="#c6e3ed"/>
+<circle cx="984.59" cy="114" r="4" fill="#126e82"><title>Par 1: 1.025604 ms/consulta</title></circle>
+<circle cx="981.21" cy="128" r="4" fill="#126e82"><title>Par 2: 1.0205415 ms/consulta</title></circle>
+<circle cx="985.59" cy="142" r="4" fill="#126e82"><title>Par 3: 1.0271035 ms/consulta</title></circle>
+<circle cx="956.24" cy="156" r="4" fill="#126e82"><title>Par 4: 0.9831455 ms/consulta</title></circle>
+<circle cx="985.55" cy="114" r="4" fill="#126e82"><title>Par 5: 1.027042 ms/consulta</title></circle>
+<circle cx="973.43" cy="128" r="4" fill="#126e82"><title>Par 6: 1.0088965 ms/consulta</title></circle>
+<circle cx="981.82" cy="142" r="4" fill="#126e82"><title>Par 7: 1.021458 ms/consulta</title></circle>
+<circle cx="971.65" cy="156" r="4" fill="#126e82"><title>Par 8: 1.0062295 ms/consulta</title></circle>
+<circle cx="968.97" cy="114" r="4" fill="#126e82"><title>Par 9: 1.002208 ms/consulta</title></circle>
+<circle cx="989.90" cy="128" r="4" fill="#126e82"><title>Par 10: 1.033563 ms/consulta</title></circle>
+<circle cx="983.60" cy="142" r="4" fill="#126e82"><title>Par 11: 1.0241255 ms/consulta</title></circle>
+<circle cx="980.59" cy="156" r="4" fill="#126e82"><title>Par 12: 1.0196255 ms/consulta</title></circle>
+<circle cx="962.86" cy="114" r="4" fill="#126e82"><title>Par 13: 0.9930625 ms/consulta</title></circle>
+<circle cx="994.44" cy="128" r="4" fill="#126e82"><title>Par 14: 1.0403745 ms/consulta</title></circle>
+<circle cx="969.14" cy="142" r="4" fill="#126e82"><title>Par 15: 1.002459 ms/consulta</title></circle>
+<circle cx="963.23" cy="156" r="4" fill="#126e82"><title>Par 16: 0.9936045 ms/consulta</title></circle>
+<circle cx="965.17" cy="114" r="4" fill="#126e82"><title>Par 17: 0.996521 ms/consulta</title></circle>
+<circle cx="971.24" cy="128" r="4" fill="#126e82"><title>Par 18: 1.0056045 ms/consulta</title></circle>
+<circle cx="962.21" cy="142" r="4" fill="#126e82"><title>Par 19: 0.9920835 ms/consulta</title></circle>
+<circle cx="981.07" cy="156" r="4" fill="#126e82"><title>Par 20: 1.0203335 ms/consulta</title></circle>
+<line x1="977.01" y1="95" x2="977.01" y2="177" stroke="#101d29" stroke-width="2"/>
+<text x="300.00" y="200" text-anchor="middle" class="small">0</text>
+<text x="487.50" y="200" text-anchor="middle" class="small">0.2809</text>
+<text x="675.00" y="200" text-anchor="middle" class="small">0.5618</text>
+<text x="862.50" y="200" text-anchor="middle" class="small">0.8427</text>
+<text x="1050.00" y="200" text-anchor="middle" class="small">1.1236</text>
+<text x="300" y="227" class="small">Mediana 1.014261; IC [1.002208; 1.024126] ms/consulta</text>
+<text x="40" y="301">Leitura: p95</text>
+<text x="40" y="323" class="small">Sem − com (ms/consulta)</text>
+<rect x="957.18" y="274" width="7.52" height="72" fill="#c6e3ed"/>
+<circle cx="964.36" cy="288" r="4" fill="#126e82"><title>Par 1: 1.144791 ms/consulta</title></circle>
+<circle cx="957.83" cy="302" r="4" fill="#126e82"><title>Par 2: 1.133541 ms/consulta</title></circle>
+<circle cx="994.44" cy="316" r="4" fill="#126e82"><title>Par 3: 1.196625 ms/consulta</title></circle>
+<circle cx="953.36" cy="330" r="4" fill="#126e82"><title>Par 4: 1.125833 ms/consulta</title></circle>
+<circle cx="970.36" cy="288" r="4" fill="#126e82"><title>Par 5: 1.155125 ms/consulta</title></circle>
+<circle cx="989.13" cy="302" r="4" fill="#126e82"><title>Par 6: 1.187459 ms/consulta</title></circle>
+<circle cx="964.70" cy="316" r="4" fill="#126e82"><title>Par 7: 1.145375 ms/consulta</title></circle>
+<circle cx="957.11" cy="330" r="4" fill="#126e82"><title>Par 8: 1.132291 ms/consulta</title></circle>
+<circle cx="956.48" cy="288" r="4" fill="#126e82"><title>Par 9: 1.131209 ms/consulta</title></circle>
+<circle cx="958.68" cy="302" r="4" fill="#126e82"><title>Par 10: 1.135 ms/consulta</title></circle>
+<circle cx="965.52" cy="316" r="4" fill="#126e82"><title>Par 11: 1.146792 ms/consulta</title></circle>
+<circle cx="959.62" cy="330" r="4" fill="#126e82"><title>Par 12: 1.136625 ms/consulta</title></circle>
+<circle cx="956.55" cy="288" r="4" fill="#126e82"><title>Par 13: 1.131334 ms/consulta</title></circle>
+<circle cx="982.89" cy="302" r="4" fill="#126e82"><title>Par 14: 1.176708 ms/consulta</title></circle>
+<circle cx="960.66" cy="316" r="4" fill="#126e82"><title>Par 15: 1.138417 ms/consulta</title></circle>
+<circle cx="946.98" cy="330" r="4" fill="#126e82"><title>Par 16: 1.114834 ms/consulta</title></circle>
+<circle cx="960.11" cy="288" r="4" fill="#126e82"><title>Par 17: 1.137459 ms/consulta</title></circle>
+<circle cx="957.18" cy="302" r="4" fill="#126e82"><title>Par 18: 1.132418 ms/consulta</title></circle>
+<circle cx="957.67" cy="316" r="4" fill="#126e82"><title>Par 19: 1.13325 ms/consulta</title></circle>
+<circle cx="963.20" cy="330" r="4" fill="#126e82"><title>Par 20: 1.142792 ms/consulta</title></circle>
+<line x1="959.87" y1="269" x2="959.87" y2="351" stroke="#101d29" stroke-width="2"/>
+<text x="300.00" y="374" text-anchor="middle" class="small">0</text>
+<text x="487.50" y="374" text-anchor="middle" class="small">0.32309</text>
+<text x="675.00" y="374" text-anchor="middle" class="small">0.64618</text>
+<text x="862.50" y="374" text-anchor="middle" class="small">0.96927</text>
+<text x="1050.00" y="374" text-anchor="middle" class="small">1.2924</text>
+<text x="300" y="401" class="small">Mediana 1.137042; IC [1.132418; 1.145375] ms/consulta</text>
+<text x="40" y="475">Inserção em lote</text>
+<text x="40" y="497" class="small">Com − sem (ms/linha)</text>
+<rect x="675.17" y="448" width="46.37" height="72" fill="#c6e3ed"/>
+<circle cx="711.62" cy="462" r="4" fill="#126e82"><title>Par 1: 0.00788094467 ms/linha</title></circle>
+<circle cx="667.92" cy="476" r="4" fill="#126e82"><title>Par 2: 0.00704411067 ms/linha</title></circle>
+<circle cx="994.44" cy="490" r="4" fill="#126e82"><title>Par 3: 0.0132958067 ms/linha</title></circle>
+<circle cx="667.33" cy="504" r="4" fill="#126e82"><title>Par 4: 0.00703286133 ms/linha</title></circle>
+<circle cx="762.76" cy="462" r="4" fill="#126e82"><title>Par 5: 0.00885991667 ms/linha</title></circle>
+<circle cx="599.44" cy="476" r="4" fill="#126e82"><title>Par 6: 0.005732972 ms/linha</title></circle>
+<circle cx="703.26" cy="490" r="4" fill="#126e82"><title>Par 7: 0.00772086133 ms/linha</title></circle>
+<circle cx="678.31" cy="504" r="4" fill="#126e82"><title>Par 8: 0.00724305667 ms/linha</title></circle>
+<circle cx="734.18" cy="462" r="4" fill="#126e82"><title>Par 9: 0.00831286133 ms/linha</title></circle>
+<circle cx="695.81" cy="476" r="4" fill="#126e82"><title>Par 10: 0.00757825 ms/linha</title></circle>
+<circle cx="721.54" cy="490" r="4" fill="#126e82"><title>Par 11: 0.008070778 ms/linha</title></circle>
+<circle cx="641.63" cy="504" r="4" fill="#126e82"><title>Par 12: 0.006540778 ms/linha</title></circle>
+<circle cx="739.65" cy="462" r="4" fill="#126e82"><title>Par 13: 0.00841752733 ms/linha</title></circle>
+<circle cx="698.14" cy="476" r="4" fill="#126e82"><title>Par 14: 0.007622722 ms/linha</title></circle>
+<circle cx="764.44" cy="490" r="4" fill="#126e82"><title>Par 15: 0.00889222333 ms/linha</title></circle>
+<circle cx="655.54" cy="504" r="4" fill="#126e82"><title>Par 16: 0.006807194 ms/linha</title></circle>
+<circle cx="717.40" cy="462" r="4" fill="#126e82"><title>Par 17: 0.007991444 ms/linha</title></circle>
+<circle cx="695.39" cy="476" r="4" fill="#126e82"><title>Par 18: 0.00757011133 ms/linha</title></circle>
+<circle cx="687.70" cy="490" r="4" fill="#126e82"><title>Par 19: 0.00742291667 ms/linha</title></circle>
+<circle cx="675.17" cy="504" r="4" fill="#126e82"><title>Par 20: 0.007183 ms/linha</title></circle>
+<line x1="696.98" y1="443" x2="696.98" y2="525" stroke="#101d29" stroke-width="2"/>
+<text x="300.00" y="548" text-anchor="middle" class="small">0</text>
+<text x="487.50" y="548" text-anchor="middle" class="small">0.0035899</text>
+<text x="675.00" y="548" text-anchor="middle" class="small">0.0071797</text>
+<text x="862.50" y="548" text-anchor="middle" class="small">0.01077</text>
+<text x="1050.00" y="548" text-anchor="middle" class="small">0.014359</text>
+<text x="300" y="575" class="small">Mediana 0.007600486; IC [0.007183; 0.008070778] ms/linha</text>
+<text x="40" y="649">Arquivo final</text>
+<text x="40" y="671" class="small">Com − sem (KiB)</text>
+<rect x="979.61" y="622" width="8.90" height="72" fill="#c6e3ed"/>
+<circle cx="985.54" cy="636" r="4" fill="#126e82"><title>Par 1: 924 KiB</title></circle>
+<circle cx="985.54" cy="650" r="4" fill="#126e82"><title>Par 2: 924 KiB</title></circle>
+<circle cx="988.51" cy="664" r="4" fill="#126e82"><title>Par 3: 928 KiB</title></circle>
+<circle cx="979.61" cy="678" r="4" fill="#126e82"><title>Par 4: 916 KiB</title></circle>
+<circle cx="976.64" cy="636" r="4" fill="#126e82"><title>Par 5: 912 KiB</title></circle>
+<circle cx="979.61" cy="650" r="4" fill="#126e82"><title>Par 6: 916 KiB</title></circle>
+<circle cx="988.51" cy="664" r="4" fill="#126e82"><title>Par 7: 928 KiB</title></circle>
+<circle cx="982.57" cy="678" r="4" fill="#126e82"><title>Par 8: 920 KiB</title></circle>
+<circle cx="994.44" cy="636" r="4" fill="#126e82"><title>Par 9: 936 KiB</title></circle>
+<circle cx="970.70" cy="650" r="4" fill="#126e82"><title>Par 10: 904 KiB</title></circle>
+<circle cx="994.44" cy="664" r="4" fill="#126e82"><title>Par 11: 936 KiB</title></circle>
+<circle cx="979.61" cy="678" r="4" fill="#126e82"><title>Par 12: 916 KiB</title></circle>
+<circle cx="964.77" cy="636" r="4" fill="#126e82"><title>Par 13: 896 KiB</title></circle>
+<circle cx="988.51" cy="650" r="4" fill="#126e82"><title>Par 14: 928 KiB</title></circle>
+<circle cx="985.54" cy="664" r="4" fill="#126e82"><title>Par 15: 924 KiB</title></circle>
+<circle cx="976.64" cy="678" r="4" fill="#126e82"><title>Par 16: 912 KiB</title></circle>
+<circle cx="991.48" cy="636" r="4" fill="#126e82"><title>Par 17: 932 KiB</title></circle>
+<circle cx="985.54" cy="650" r="4" fill="#126e82"><title>Par 18: 924 KiB</title></circle>
+<circle cx="982.57" cy="664" r="4" fill="#126e82"><title>Par 19: 920 KiB</title></circle>
+<circle cx="994.44" cy="678" r="4" fill="#126e82"><title>Par 20: 936 KiB</title></circle>
+<line x1="985.54" y1="617" x2="985.54" y2="699" stroke="#101d29" stroke-width="2"/>
+<text x="300.00" y="722" text-anchor="middle" class="small">0</text>
+<text x="487.50" y="722" text-anchor="middle" class="small">252.72</text>
+<text x="675.00" y="722" text-anchor="middle" class="small">505.44</text>
+<text x="862.50" y="722" text-anchor="middle" class="small">758.16</text>
+<text x="1050.00" y="722" text-anchor="middle" class="small">1010.9</text>
+<text x="300" y="749" class="small">Mediana 924; IC [916; 928] KiB</text>
+<text x="40" y="804" class="small">ICs pontuais, sem ajuste simultâneo. Apenas mediana de leitura é confirmatória. Intervalos condicionados à carga e máquina.</text></svg>
