@@ -1,0 +1,30 @@
+{
+  "collection_commit": "dd31f1e",
+  "revalidation": {
+    "status": "passed",
+    "pairs": 20,
+    "read_records": 6000,
+    "write_batches": 120,
+    "sqlite_version": "3.53.4",
+    "source_sha256": {
+      "read_timings.csv": "4504bac2d23676dc2b5539ccb958ead5a553e4be7592ebf5e113758ff4ec1985",
+      "write_timings.csv": "0624b20f53bb2de41985461c51aa9397f19715fa687378ea45bf97d2b6dc6a99",
+      "metadata.json": "74e190b0246863e507bd0ba4da4a6065ca70b530a65ea3b4a42b577777cfc723",
+      "summary.json": "670626909aac06271b8b5218860ef53f5b9b45d7dcc876064b15aa4113eddd9e"
+    }
+  },
+  "checkout_sha256": {
+    "read_timings.csv": "564597922efa2c3a617731425508703ff0ff95f0c6222797e56f209493b986c4",
+    "write_timings.csv": "7315d6a6c1f27f44d8124c5665aa09aa6674c1d17ef1bca06baee0a36af87d6c",
+    "metadata.json": "8fa11317ef844215c3fd26ac283f20fe7390757cce90086f85e82fd1bd3a3fc4",
+    "summary.json": "c094146086b014e521bac91f885dac08e66beae26cd11f54768bdfbde2367702"
+  },
+  "crlf_to_lf_in_temporary_copy": [
+    "read_timings.csv",
+    "write_timings.csv",
+    "metadata.json",
+    "summary.json"
+  ],
+  "validation_sha256": "153ce1fcfdeb1bb80b398d855d8107329f4e7e0643bb98f0bc3a7e99558279f2",
+  "raw_files_modified": false
+}

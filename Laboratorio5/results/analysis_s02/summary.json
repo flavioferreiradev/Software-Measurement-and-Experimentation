@@ -1,0 +1,465 @@
+{
+  "scope": "20_paired_databases_synthetic_single_machine",
+  "n_independent_pairs": 20,
+  "metrics": {
+    "read_median_ms": {
+      "label": "Leitura: mediana",
+      "unit": "ms/consulta",
+      "direction": "without/with; without-with",
+      "descriptive": {
+        "without_index": {
+          "n": 20,
+          "median": 1.0274377499999998,
+          "mean": 1.02523435,
+          "sd": 0.01592066331111208,
+          "q25": 1.0095835,
+          "q75": 1.0374585,
+          "iqr": 0.027875000000000094,
+          "p95": 1.0463545,
+          "min": 0.9960205,
+          "max": 1.052937
+        },
+        "with_index": {
+          "n": 20,
+          "median": 0.013021,
+          "mean": 0.013055075,
+          "sd": 0.00035026614974601047,
+          "q25": 0.0127915,
+          "q75": 0.01325,
+          "iqr": 0.00045849999999999884,
+          "p95": 0.013687,
+          "min": 0.012458,
+          "max": 0.01375
+        },
+        "difference": {
+          "n": 20,
+          "median": 1.0142609999999999,
+          "mean": 1.012179275,
+          "sd": 0.01586544007672935,
+          "q25": 0.996521,
+          "q75": 1.0241255,
+          "iqr": 0.027604500000000032,
+          "p95": 1.033563,
+          "min": 0.9831455,
+          "max": 1.0403745
+        },
+        "ratio": {
+          "n": 20,
+          "median": 78.18809615384615,
+          "mean": 78.57999559435645,
+          "sd": 2.2746023344003765,
+          "q25": 77.06835608035578,
+          "q75": 79.40953011766538,
+          "iqr": 2.3411740373095995,
+          "p95": 82.90187028415477,
+          "min": 75.61976258274471,
+          "max": 83.81588059701492
+        },
+        "change_pct": {
+          "n": 20,
+          "median": -98.72102716151653,
+          "mean": -98.72641953307884,
+          "sd": 0.03609114141531343,
+          "q25": -98.74578483896792,
+          "q75": -98.70614961516308,
+          "iqr": 0.03963522380483653,
+          "p95": -98.67896875016513,
+          "min": -98.80690867544781,
+          "max": -98.67759436707331
+        }
+      },
+      "median_ci": {
+        "without_index": {
+          "low": 1.0149374999999998,
+          "high": 1.0374585,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "with_index": {
+          "low": 0.012833,
+          "high": 0.01325,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "difference": {
+          "low": 1.0022079999999998,
+          "high": 1.0241255,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "ratio": {
+          "low": 77.28868899521531,
+          "high": 79.40953011766538,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "change_pct": {
+          "low": -98.74070530512112,
+          "high": -98.70614961516308,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        }
+      },
+      "positive_differences": 20
+    },
+    "read_p95_ms": {
+      "label": "Leitura: p95",
+      "unit": "ms/consulta",
+      "direction": "without/with; without-with",
+      "descriptive": {
+        "without_index": {
+          "n": 20,
+          "median": 1.1523965,
+          "mean": 1.15928145,
+          "sd": 0.021388926277706333,
+          "q25": 1.145834,
+          "q75": 1.160625,
+          "iqr": 0.014790999999999999,
+          "p95": 1.204042,
+          "min": 1.129709,
+          "max": 1.214875
+        },
+        "with_index": {
+          "n": 20,
+          "median": 0.014541499999999999,
+          "mean": 0.01538755,
+          "sd": 0.0023717836609207267,
+          "q25": 0.013625,
+          "q75": 0.016583,
+          "iqr": 0.0029580000000000006,
+          "p95": 0.01825,
+          "min": 0.013416,
+          "max": 0.022834
+        },
+        "difference": {
+          "n": 20,
+          "median": 1.137042,
+          "mean": 1.1438939,
+          "sd": 0.020613580536039535,
+          "q25": 1.132291,
+          "q75": 1.145375,
+          "iqr": 0.013084000000000096,
+          "p95": 1.187459,
+          "min": 1.114834,
+          "max": 1.1966249999999998
+        },
+        "ratio": {
+          "n": 20,
+          "median": 78.7641459515232,
+          "mean": 76.68987799156173,
+          "sd": 9.379946694932906,
+          "q25": 68.71211395738568,
+          "q75": 84.42201834862385,
+          "iqr": 15.709904391238169,
+          "p95": 85.40802027429935,
+          "min": 50.642681965490056,
+          "max": 86.31815545243619
+        },
+        "change_pct": {
+          "n": 20,
+          "median": -98.72956990680744,
+          "mean": -98.67357285694368,
+          "sd": 0.19666283870128148,
+          "q25": -98.82229536976081,
+          "q75": -98.6227224631699,
+          "iqr": 0.19957290659091598,
+          "p95": -98.4863669973901,
+          "min": -98.8414951700966,
+          "max": -98.02538103988758
+        }
+      },
+      "median_ci": {
+        "without_index": {
+          "low": 1.147458,
+          "high": 1.160625,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "with_index": {
+          "low": 0.013792,
+          "high": 0.016583,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "difference": {
+          "low": 1.132418,
+          "high": 1.145375,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "ratio": {
+          "low": 72.60700717602364,
+          "high": 84.42201834862385,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "change_pct": {
+          "low": -98.81547489676157,
+          "high": -98.6227224631699,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        }
+      },
+      "positive_differences": 20
+    },
+    "write_ms_per_row": {
+      "label": "Inserção em lote",
+      "unit": "ms/linha",
+      "direction": "with/without; with-without",
+      "descriptive": {
+        "without_index": {
+          "n": 20,
+          "median": 0.0022704446666666667,
+          "mean": 0.0025184123333333334,
+          "sd": 0.0006263943469573996,
+          "q25": 0.0020795546666666667,
+          "q75": 0.002677944,
+          "iqr": 0.0005983893333333331,
+          "p95": 0.003545,
+          "min": 0.0019245546666666667,
+          "max": 0.004138333333333333
+        },
+        "with_index": {
+          "n": 20,
+          "median": 0.010105555333333334,
+          "mean": 0.010379429133333333,
+          "sd": 0.0012972064255882048,
+          "q25": 0.009858305333333334,
+          "q75": 0.010589110666666667,
+          "iqr": 0.0007308053333333325,
+          "p95": 0.010916944,
+          "min": 0.008785944666666667,
+          "max": 0.015375361333333334
+        },
+        "difference": {
+          "n": 20,
+          "median": 0.007600486,
+          "mean": 0.0078610168,
+          "sd": 0.001490023902317793,
+          "q25": 0.007044110666666667,
+          "q75": 0.008070778,
+          "iqr": 0.0010266673333333334,
+          "p95": 0.008892223333333334,
+          "min": 0.005732972,
+          "max": 0.013295806666666667
+        },
+        "ratio": {
+          "n": 20,
+          "median": 4.3015331825247145,
+          "mean": 4.332781687355654,
+          "sd": 1.1062672981247672,
+          "q25": 3.751124973067853,
+          "q75": 4.807967617951808,
+          "iqr": 1.0568426448839547,
+          "p95": 5.62040569039002,
+          "min": 2.3853335481272655,
+          "max": 7.393583626237925
+        },
+        "change_pct": {
+          "n": 20,
+          "median": 330.15331825247154,
+          "mean": 333.27816873556543,
+          "sd": 110.62672981247671,
+          "q25": 275.11249730678526,
+          "q75": 380.79676179518077,
+          "iqr": 105.68426448839551,
+          "p95": 462.040569039002,
+          "min": 138.53335481272654,
+          "max": 639.3583626237925
+        }
+      },
+      "median_ci": {
+        "without_index": {
+          "low": 0.0020961946666666668,
+          "high": 0.002677944,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "with_index": {
+          "low": 0.009859833333333333,
+          "high": 0.010589110666666667,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "difference": {
+          "low": 0.007182999999999998,
+          "high": 0.008070778,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "ratio": {
+          "low": 3.9429086891535694,
+          "high": 4.807967617951808,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "change_pct": {
+          "low": 294.29086891535695,
+          "high": 380.79676179518077,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        }
+      },
+      "positive_differences": 20
+    },
+    "database_bytes": {
+      "label": "Arquivo final",
+      "unit": "bytes",
+      "direction": "with/without; with-without",
+      "descriptive": {
+        "without_index": {
+          "n": 20,
+          "median": 1085440.0,
+          "mean": 1085440,
+          "sd": 0.0,
+          "q25": 1085440,
+          "q75": 1085440,
+          "iqr": 0,
+          "p95": 1085440,
+          "min": 1085440,
+          "max": 1085440
+        },
+        "with_index": {
+          "n": 20,
+          "median": 2031616.0,
+          "mean": 2029158.4,
+          "sd": 10828.84618628946,
+          "q25": 2023424,
+          "q75": 2035712,
+          "iqr": 12288,
+          "p95": 2043904,
+          "min": 2002944,
+          "max": 2043904
+        },
+        "difference": {
+          "n": 20,
+          "median": 946176.0,
+          "mean": 943718.4,
+          "sd": 10828.84618628946,
+          "q25": 937984,
+          "q75": 950272,
+          "iqr": 12288,
+          "p95": 958464,
+          "min": 917504,
+          "max": 958464
+        },
+        "ratio": {
+          "n": 20,
+          "median": 1.8716981132075472,
+          "mean": 1.869433962264151,
+          "sd": 0.009976457645092736,
+          "q25": 1.8641509433962264,
+          "q75": 1.8754716981132076,
+          "iqr": 0.01132075471698113,
+          "p95": 1.8830188679245283,
+          "min": 1.8452830188679246,
+          "max": 1.8830188679245283
+        },
+        "change_pct": {
+          "n": 20,
+          "median": 87.16981132075472,
+          "mean": 86.94339622641509,
+          "sd": 0.997645764509274,
+          "q25": 86.41509433962264,
+          "q75": 87.54716981132076,
+          "iqr": 1.1320754716981156,
+          "p95": 88.30188679245283,
+          "min": 84.52830188679246,
+          "max": 88.30188679245283
+        }
+      },
+      "median_ci": {
+        "without_index": {
+          "low": 1085440,
+          "high": 1085440,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "with_index": {
+          "low": 2023424,
+          "high": 2035712,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "difference": {
+          "low": 937984,
+          "high": 950272,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "ratio": {
+          "low": 1.8641509433962264,
+          "high": 1.8754716981132076,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        },
+        "change_pct": {
+          "low": 86.41509433962264,
+          "high": 87.54716981132076,
+          "coverage_at_least": 0.9586105346679688,
+          "lower_order": 6,
+          "upper_order": 15
+        }
+      },
+      "positive_differences": 20
+    }
+  },
+  "primary_test": {
+    "n_pairs": 20,
+    "positive": 20,
+    "negative": 0,
+    "zero": 0,
+    "p_one_sided": 9.5367431640625e-07,
+    "alpha": 0.05,
+    "null": "median(without_index - with_index) <= 0",
+    "alternative": "median(without_index - with_index) > 0",
+    "method": "exact_binomial_sign_test_zeros_retained_as_nonpositive",
+    "reject_at_alpha": true
+  },
+  "primary_effect": {
+    "median_difference_ms": 1.0142609999999999,
+    "median_difference_ci": {
+      "low": 1.0022079999999998,
+      "high": 1.0241255,
+      "coverage_at_least": 0.9586105346679688,
+      "lower_order": 6,
+      "upper_order": 15
+    },
+    "paired_sign_dominance": 1.0,
+    "paired_sign_dominance_definition": "(positive-negative)/all_pairs; range [-1,1]"
+  },
+  "index_build_ms": {
+    "n": 20,
+    "median": 12.6504165,
+    "mean": 12.76884585,
+    "sd": 0.445551887019644,
+    "q25": 12.584292,
+    "q75": 12.924,
+    "iqr": 0.3397079999999999,
+    "p95": 13.191792,
+    "min": 12.0775,
+    "max": 14.326125
+  },
+  "quantile_method": "nearest_rank; median averages central two for even n",
+  "interval_method": "two_sided_order_statistics_median; nominal .95; pointwise",
+  "write_estimand": "sum(batch duration_ns) / sum(batch_count) / 1e6 in each pair"
+}

@@ -61,3 +61,30 @@ metadados, pareamento, contagens, planos, durações, resumos e hashes de todos
 os arquivos brutos, gerando `validation.json`. A execução e seus limites estão
 registrados em `docs/coleta_s02.md`. Os tempos não serão idênticos em outra
 máquina ou execução, mesmo com os mesmos dados e a mesma versão do SQLite.
+
+### Sprint 02 — análise dos 20 pares
+
+O [relatório final da S02](docs/resultados_s02.md) responde à pergunta,
+apresenta o teste exato dos sinais pareado, tamanhos de efeito, intervalos e
+as quatro ameaças à validade. Use a coleta já versionada, **sem refazê-la**:
+
+```bash
+python Laboratorio5/src/analyze_s02.py
+python -m unittest discover -s Laboratorio5/tests -p test_analysis_s02.py -v
+```
+
+Requer apenas Python 3.10+, sem dependências externas ou exigência de versão
+do SQLite local. O script revalida uma cópia temporária dos dados, confere os
+hashes publicados e preserva a origem, inclusive em checkouts Windows/CRLF.
+Os testes de análise não executam coleta. O diretório
+[`results/analysis_s02/`](results/analysis_s02/) recebe a tabela por par,
+descritivas, efeitos, teste, auditoria, tabelas Markdown e dois gráficos SVG.
+O relatório detalha fórmulas, convenções e como rastrear os números aos brutos.
+Use `--output-dir .pytest-tmp/lab05-analysis-check` para uma comparação em
+diretório separado; consulte `--help` para os caminhos de entrada e saída.
+
+A análise usa **n = 20 pares**, com 6.000 leituras como submedições. O ganho
+mediano pareado de leitura foi 1,014261 ms por consulta (razão 78,1881), com
+custo mediano de inserção 4,3015 vezes maior e arquivo 87,1698% maior.
+Estes são resultados desta carga sintética nesta máquina, sem medição de
+impacto real em produção.
